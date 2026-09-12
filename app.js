@@ -19,6 +19,13 @@ const statusDiv = document.getElementById('status');
 const bgPreset = document.getElementById('bgPreset');
 const bgColorPicker = document.getElementById('bgColorPicker');
 const watermarkInput = document.getElementById('watermarkInput');
+const wmPos = document.getElementById('wmPos');
+const wmColor = document.getElementById('wmColor');
+const wmBorderColor = document.getElementById('wmBorderColor');
+const wmBold = document.getElementById('wmBold');
+const wmItalic = document.getElementById('wmItalic');
+const wmBorderWidth = document.getElementById('wmBorderWidth');
+const wmOpacity = document.getElementById('wmOpacity');
 const pingpongInput = document.getElementById('pingpongInput');
 const resolutionInput = document.getElementById('resolutionInput');
 const exportEstimate = document.getElementById('exportEstimate');
@@ -232,17 +239,37 @@ function drawFinalFrameToContext(targetCtx, width, height, frameIndex, framesCou
     // Draw Watermark
     if (watermarkInput.value.trim() !== '') {
         const text = watermarkInput.value.trim();
-        const fontSize = Math.max(16, Math.floor(height * 0.035));
-        targetCtx.font = `bold ${fontSize}px sans-serif`;
-        targetCtx.textAlign = 'right';
-        targetCtx.textBaseline = 'bottom';
+        const fontSize = Math.max(14, Math.floor(height * 0.035));
         
-        targetCtx.lineWidth = Math.max(2, fontSize * 0.15);
-        targetCtx.strokeStyle = '#000000';
-        targetCtx.strokeText(text, width - 20, height - 20);
+        const isBold = wmBold.classList.contains('active') ? 'bold' : '';
+        const isItalic = wmItalic.classList.contains('active') ? 'italic' : '';
+        targetCtx.font = `${isItalic} ${isBold} ${fontSize}px sans-serif`.trim();
+        targetCtx.globalAlpha = parseFloat(wmOpacity.value);
         
-        targetCtx.fillStyle = '#ffffff';
-        targetCtx.fillText(text, width - 20, height - 20);
+        targetCtx.textBaseline = 'middle';
+        targetCtx.textAlign = 'center';
+        
+        const padding = fontSize;
+        let x, y;
+        const pos = wmPos.value;
+        
+        if (pos === 'br') { targetCtx.textAlign = 'right'; x = width - padding; y = height - padding; }
+        else if (pos === 'bl') { targetCtx.textAlign = 'left'; x = padding; y = height - padding; }
+        else if (pos === 'tr') { targetCtx.textAlign = 'right'; x = width - padding; y = padding; }
+        else if (pos === 'tl') { targetCtx.textAlign = 'left'; x = padding; y = padding; }
+        else if (pos === 'c') { targetCtx.textAlign = 'center'; x = width/2; y = height/2; }
+        
+        const bWidth = parseInt(wmBorderWidth.value);
+        if (bWidth > 0) {
+            targetCtx.lineWidth = Math.max(1, fontSize * (bWidth / 20));
+            targetCtx.strokeStyle = wmBorderColor.value;
+            targetCtx.strokeText(text, x, y);
+        }
+        
+        targetCtx.fillStyle = wmColor.value;
+        targetCtx.fillText(text, x, y);
+        
+        targetCtx.globalAlpha = 1.0;
     }
 }
 
@@ -410,6 +437,13 @@ function enableControls() {
     blockInput.disabled = false;
     bgPreset.disabled = false;
     watermarkInput.disabled = false;
+    wmPos.disabled = false;
+    wmColor.disabled = false;
+    wmBorderColor.disabled = false;
+    wmBold.disabled = false;
+    wmItalic.disabled = false;
+    wmBorderWidth.disabled = false;
+    wmOpacity.disabled = false;
     pingpongInput.disabled = false;
     resolutionInput.disabled = false;
     exportBtn.disabled = false;
@@ -503,3 +537,22 @@ themeTogglePreview.addEventListener('change', () => {
 
 
 
+// Check for shared image from Web Share API
+if (window.location.search.includes('shared=true')) {
+    caches.open('jitterfx-shared').then(cache => {
+        cache.match('/shared-image').then(response => {
+            if (response) {
+                response.blob().then(blob => {
+                    handleFile(blob);
+                    cache.delete('/shared-image');
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+        });
+    });
+}
+
+// Watermark UI listeners
+wmBold.addEventListener('click', () => wmBold.classList.toggle('active'));
+wmItalic.addEventListener('click', () => wmItalic.classList.toggle('active'));

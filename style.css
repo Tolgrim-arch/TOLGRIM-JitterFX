@@ -121,3 +121,9 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
     background: repeating-conic-gradient(var(--bg1) 0% 25%, var(--bg2) 0% 50%) 50% / 40px 40px;
 }
 
+
+.toggle-btn { background: #444; color: #fff; transition: background 0.2s; }
+.toggle-btn.active { background: var(--accent-color); color: #000; }
+.sidebar.light-theme .toggle-btn { background: #e0e0e0; color: #333; }
+.sidebar.light-theme .toggle-btn.active { background: var(--accent-color); color: #fff; }
+

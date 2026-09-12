@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jitterfx-v5';
+const CACHE_NAME = 'jitterfx-v6';
 const ASSETS = [
     './',
     './index.html',
@@ -35,6 +35,17 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+    if (e.request.method === 'POST') {
+        e.respondWith((async () => {
+            const formData = await e.request.formData();
+            const image = formData.get('image');
+            const cache = await caches.open('jitterfx-shared');
+            await cache.put(new Request('/shared-image'), new Response(image));
+            return Response.redirect('./?shared=true', 303);
+        })());
+        return;
+    }
+
     e.respondWith(
         fetch(e.request).then(response => {
             // Update cache with fresh version
