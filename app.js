@@ -52,6 +52,17 @@ const fsSource = `
     float rand(vec2 co) {
         return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
     }
+    
+    float value_noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        float a = rand(i);
+        float b = rand(i + vec2(1.0, 0.0));
+        float c = rand(i + vec2(0.0, 1.0));
+        float d = rand(i + vec2(1.0, 1.0));
+        return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+    }
 
     void main() {
         float t = mod(floor(u_time * max(u_sketchy_speed, 1.0)), max(u_sketchy_frames, 1.0));
@@ -67,12 +78,16 @@ const fsSource = `
         } else if (u_sketchy_type < 2.5) {
             offset.x = (rand(v_tex_coord + vec2(t, 0.0)) - 0.5) * u_sketchy_amount;
             offset.y = (rand(v_tex_coord + vec2(0.0, t)) - 0.5) * u_sketchy_amount;
-        } else {
+        } else if (u_sketchy_type < 3.5) {
             float freq = max(u_sketchy_blocksize, 1.0);
             float phaseX = rand(vec2(t, 1.0)) * 6.2831;
             float phaseY = rand(vec2(1.0, t)) * 6.2831;
             offset.x = sin(v_tex_coord.y * freq + phaseX) * u_sketchy_amount;
             offset.y = sin(v_tex_coord.x * freq + phaseY) * u_sketchy_amount;
+        } else {
+            vec2 grid = v_tex_coord * max(u_sketchy_blocksize, 1.0);
+            offset.x = (value_noise(grid + vec2(t * 10.0, 0.0)) - 0.5) * u_sketchy_amount;
+            offset.y = (value_noise(grid + vec2(0.0, t * 10.0)) - 0.5) * u_sketchy_amount;
         }
         
         gl_FragColor = texture2D(tex0, v_tex_coord + offset);
