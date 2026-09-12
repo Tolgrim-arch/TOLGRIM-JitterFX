@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg: #121212;
     --accent: #bb86fc;
 }
@@ -93,20 +93,20 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
     .preview { min-height: 50vh; }
 }
 
-.theme-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
-.theme-switch input { opacity: 0; width: 0; height: 0; }
+.theme-switch { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 30px; }
+.theme-switch input { display: none; }
 .theme-switch .slider {
     position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #333; transition: .3s; border-radius: 26px;
+    background-color: #333; transition: .3s; border-radius: 30px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 4px; border: 1px solid #555;
+    padding: 0 8px; border: 1px solid #555; overflow: hidden;
 }
 .theme-switch .slider:before {
-    position: absolute; content: ""; height: 20px; width: 20px; left: 2px; bottom: 2px;
+    position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px;
     background-color: white; transition: .3s; border-radius: 50%; z-index: 2;
 }
-.theme-switch input:checked + .slider { background-color: #ccc; border-color: #bbb; }
-.theme-switch input:checked + .slider:before { transform: translateX(24px); background-color: #121212; }
-.theme-switch .slider svg { width: 14px; height: 14px; z-index: 1; color: #aaa; }
-.theme-switch input:checked + .slider svg { color: #555; }
+.theme-switch input:checked + .slider { background-color: var(--accent-color); border-color: var(--accent-color); }
+.theme-switch input:checked + .slider:before { transform: translateX(30px); background-color: #121212; }
+.theme-switch .slider svg { width: 14px; height: 14px; z-index: 1; color: #fff; }
+.theme-switch input:checked + .slider svg { color: #fff; }
 
