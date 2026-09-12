@@ -1,4 +1,4 @@
-﻿const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // Hidden WebGL canvas for shader processing
@@ -7,6 +7,7 @@ const gl = webglCanvas.getContext('webgl', { preserveDrawingBuffer: true, alpha:
 
 // UI Elements
 const imageInput = document.getElementById('imageInput');
+const imageInfo = document.getElementById('imageInfo');
 const typeInput = document.getElementById('typeInput');
 const amountInput = document.getElementById('amountInput');
 const speedInput = document.getElementById('speedInput');
@@ -391,6 +392,12 @@ function handleFile(file) {
         
         enableControls();
         statusDiv.innerText = 'Imagen cargada. Previsualizando...';
+        
+        let mbSize = (file.size / (1024 * 1024)).toFixed(2);
+        let kbSize = (file.size / 1024).toFixed(1);
+        let displaySize = file.size > 1024 * 1024 ? `${mbSize} MB` : `${kbSize} KB`;
+        imageInfo.innerHTML = `<strong>Res:</strong> ${img.width}x${img.height} px &nbsp;|&nbsp; <strong>Peso:</strong> ${displaySize}`;
+        imageInfo.style.display = 'block';
         
         if (animationId) cancelAnimationFrame(animationId);
         animationId = requestAnimationFrame(render);
