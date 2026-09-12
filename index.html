@@ -48,7 +48,7 @@
             </div>
 
             <div class="control-group">
-                <label>Tipo de Jitter <span title="El estilo matemático de vibración. El Ruido Perlin (Value Noise) es más orgánico, los demás son más robóticos o cuadriculados." style="cursor:help;opacity:0.6">[?]</span></label>
+                <label>Tipo de Jitter <span title="El estilo matemático de vibración. El Ruido Perlin (Value Noise) es más orgánico, los demás son más robóticos o cuadriculados." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <select id="typeInput" disabled>
                     <option value="0">Global Shift</option>
                     <option value="1">Chunky Jitter (Bloques)</option>
@@ -59,27 +59,27 @@
             </div>
 
             <div class="control-group">
-                <label>Intensidad <span title="Fuerza del temblor. Valores altos rompen la imagen." style="cursor:help;opacity:0.6">[?]</span>: <span id="amountVal">0.005</span></label>
+                <label>Intensidad <span title="Fuerza del temblor. Valores altos rompen la imagen." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="amountVal">0.005</span></label>
                 <input type="range" id="amountInput" min="0" max="0.05" step="0.001" value="0.005" disabled>
             </div>
 
             <div class="control-group">
-                <label>Velocidad (FPS) <span title="Rapidez del temblor." style="cursor:help;opacity:0.6">[?]</span>: <span id="speedVal">8</span></label>
+                <label>Velocidad (FPS) <span title="Rapidez del temblor." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="speedVal">8</span></label>
                 <input type="range" id="speedInput" min="1" max="30" step="1" value="8" disabled>
             </div>
 
             <div class="control-group">
-                <label>Frames Únicos <span title="Cuántos fotogramas componen el bucle antes de repetirse." style="cursor:help;opacity:0.6">[?]</span>: <span id="framesVal">3</span></label>
+                <label>Frames Únicos <span title="Cuántos fotogramas componen el bucle antes de repetirse." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="framesVal">3</span></label>
                 <input type="range" id="framesInput" min="2" max="24" step="1" value="3" disabled>
             </div>
 
             <div class="control-group">
-                <label>Tamaño Bloque <span title="Tamaño del bloque de ruido matemático." style="cursor:help;opacity:0.6">[?]</span>: <span id="blockVal">20</span></label>
+                <label>Tamaño Bloque <span title="Tamaño del bloque de ruido matemático." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="blockVal">20</span></label>
                 <input type="range" id="blockInput" min="1" max="100" step="1" value="20" disabled>
             </div>
 
             <div class="control-group">
-                <label>Color de Fondo (Matte) <span title="El color visible debajo de imágenes con partes transparentes (PNG/WEBP)." style="cursor:help;opacity:0.6">[?]</span></label>
+                <label>Color de Fondo (Matte) <span title="El color visible debajo de imágenes con partes transparentes (PNG/WEBP)." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <div style="display: flex; gap: 5px;">
                     <input type="color" id="bgColorPicker" value="#000000" style="width: 40px; padding: 0; cursor: pointer;" disabled>
                     <select id="bgPreset" style="flex: 1;" disabled>
@@ -93,7 +93,7 @@
             </div>
 
             <div class="control-group">
-                <label>Marca de Agua Táctica <span title="Protege tu obra inyectando texto incrustado. Usa los controles para elegir la esquina, opacidad y colores tipográficos." style="cursor:help;opacity:0.6">[?]</span></label>
+                <label>Marca de Agua Táctica <span title="Protege tu obra inyectando texto incrustado. Usa los controles para elegir la esquina, opacidad y colores tipográficos." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <input type="text" id="watermarkInput" placeholder="@usuario o Firma" disabled style="margin-bottom: 5px;">
                 
                 <div style="display: flex; gap: 5px; margin-bottom: 5px;">
@@ -127,7 +127,7 @@
             </div>
 
             <div class="control-group">
-                <label>Máscara de Aislamiento (Pincel) <span title="Dibuja sobre el lienzo para elegir con precisión qué zonas deben temblar y cuáles quedarse congeladas." style="cursor:help;opacity:0.6">[?]</span></label>
+                <label>Máscara de Aislamiento (Pincel) <span title="Dibuja sobre el lienzo para elegir con precisión qué zonas deben temblar y cuáles quedarse congeladas." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <div style="display: flex; gap: 5px; margin-bottom: 5px;">
                     <button id="brushEnableBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled>Activar Pincel</button>
                     <button id="brushViewBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled>Ver Máscara</button>
@@ -158,11 +158,11 @@
 
             <div class="control-group" style="flex-direction: row; align-items: center; margin-bottom: 10px;">
                 <input type="checkbox" id="pingpongInput" style="width: auto; cursor: pointer;" disabled>
-                <label for="pingpongInput" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong <span title="La animación rebota hacia adelante y hacia atrás. Útil para hacer bucles perfectos (seamless) que no saltan de golpe." style="cursor:help;opacity:0.6">[?]</span></label>
+                <label for="pingpongInput" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong <span title="La animación rebota hacia adelante y hacia atrás. Útil para hacer bucles perfectos (seamless) que no saltan de golpe." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
             </div>
 
             <div class="control-group">
-                <label>Resolución de Salida <span title="Escala la imagen antes de codificar el video. Evita colapsos de memoria RAM en lienzos gigantes (4K+) y permite sortear los límites de tamaño de Twitter." style="cursor:help;opacity:0.6">[?]</span></label>
+                <label>Resolución de Salida <span title="Escala la imagen antes de codificar el video. Evita colapsos de memoria RAM en lienzos gigantes (4K+) y permite sortear los límites de tamaño de Twitter." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <select id="resolutionInput" disabled>
                     <option value="original">Original</option>
                     <option value="1080">Max 1080p (Recomendado)</option>
