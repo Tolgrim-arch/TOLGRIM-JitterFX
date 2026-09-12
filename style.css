@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg: #121212;
     --panel: #1e1e1e;
     --text: #e0e0e0;
@@ -61,7 +61,7 @@ button:disabled { background: #444; color: #888; cursor: not-allowed; }
 h2 { margin: 0 0 10px 0; font-size: 1.5em; text-align: center; color: var(--accent); }
 
 @media (max-width: 768px) {
-    .container { flex-direction: column-reverse; }
-    .sidebar { width: 100%; height: auto; max-height: 50vh; border-right: none; border-top: 1px solid #333; }
+    .container { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; max-height: 50vh; border-right: none; border-bottom: 1px solid #333; border-top: none; }
     .preview { min-height: 50vh; }
 }
