@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jitterfx-v1';
+﻿const CACHE_NAME = 'jitterfx-v2';
 const ASSETS = [
     './',
     './index.html',
@@ -12,15 +12,39 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', e => {
+    self.skipWaiting();
     e.waitUntil(
         caches.open(CACHE_NAME)
         .then(cache => cache.addAll(ASSETS))
     );
 });
 
+self.addEventListener('activate', e => {
+    e.waitUntil(
+        caches.keys().then(keys => {
+            return Promise.all(
+                keys.map(key => {
+                    if (key !== CACHE_NAME) {
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
+});
+
 self.addEventListener('fetch', e => {
     e.respondWith(
-        caches.match(e.request)
-        .then(response => response || fetch(e.request))
+        fetch(e.request).then(response => {
+            // Update cache with fresh version
+            if (response && response.status === 200) {
+                let responseClone = response.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                    cache.put(e.request, responseClone);
+                });
+            }
+            return response;
+        }).catch(() => caches.match(e.request))
     );
 });
