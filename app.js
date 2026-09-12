@@ -407,25 +407,46 @@ imageInput.addEventListener('change', (e) => {
 // Hook into GIF progress via monkeypatching or just modifying the existing event if we could. Since we didn't store the gif variable globally, we can't easily hook it without regex. Let's just do a replace.
 
 
-const iconMoon = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
-const iconSun = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
-
 const sidebarElement = document.getElementById('sidebarElement');
 const themeToggleSidebar = document.getElementById('themeToggleSidebar');
 const savedSidebarTheme = localStorage.getItem('jitterfx-theme-sidebar');
 
 if (savedSidebarTheme === 'light') {
     sidebarElement.classList.add('light-theme');
-    themeToggleSidebar.innerHTML = iconMoon;
+    themeToggleSidebar.checked = true;
 } else {
-    themeToggleSidebar.innerHTML = iconSun;
+    themeToggleSidebar.checked = false;
 }
 
-themeToggleSidebar.addEventListener('click', () => {
-    sidebarElement.classList.toggle('light-theme');
-    const isLight = sidebarElement.classList.contains('light-theme');
-    localStorage.setItem('jitterfx-theme-sidebar', isLight ? 'light' : 'dark');
-    themeToggleSidebar.innerHTML = isLight ? iconMoon : iconSun;
+themeToggleSidebar.addEventListener('change', () => {
+    if (themeToggleSidebar.checked) {
+        sidebarElement.classList.add('light-theme');
+        localStorage.setItem('jitterfx-theme-sidebar', 'light');
+    } else {
+        sidebarElement.classList.remove('light-theme');
+        localStorage.setItem('jitterfx-theme-sidebar', 'dark');
+    }
+});
+
+const dropZoneElement = document.getElementById('dropZone');
+const themeTogglePreview = document.getElementById('themeTogglePreview');
+const savedPreviewTheme = localStorage.getItem('jitterfx-theme-preview');
+
+if (savedPreviewTheme === 'light') {
+    dropZoneElement.classList.add('light-theme');
+    themeTogglePreview.checked = true;
+} else {
+    themeTogglePreview.checked = false;
+}
+
+themeTogglePreview.addEventListener('change', () => {
+    if (themeTogglePreview.checked) {
+        dropZoneElement.classList.add('light-theme');
+        localStorage.setItem('jitterfx-theme-preview', 'light');
+    } else {
+        dropZoneElement.classList.remove('light-theme');
+        localStorage.setItem('jitterfx-theme-preview', 'dark');
+    }
 });
 
 const dropZoneElement = document.getElementById('dropZone'); // Same as preview
@@ -447,3 +468,45 @@ themeTogglePreview.addEventListener('click', () => {
 });
 
 
+
+const sidebarElement = document.getElementById('sidebarElement');
+const themeToggleSidebar = document.getElementById('themeToggleSidebar');
+const savedSidebarTheme = localStorage.getItem('jitterfx-theme-sidebar');
+
+if (savedSidebarTheme === 'light') {
+    sidebarElement.classList.add('light-theme');
+    themeToggleSidebar.checked = true;
+} else {
+    themeToggleSidebar.checked = false;
+}
+
+themeToggleSidebar.addEventListener('change', () => {
+    if (themeToggleSidebar.checked) {
+        sidebarElement.classList.add('light-theme');
+        localStorage.setItem('jitterfx-theme-sidebar', 'light');
+    } else {
+        sidebarElement.classList.remove('light-theme');
+        localStorage.setItem('jitterfx-theme-sidebar', 'dark');
+    }
+});
+
+const dropZoneElement = document.getElementById('dropZone');
+const themeTogglePreview = document.getElementById('themeTogglePreview');
+const savedPreviewTheme = localStorage.getItem('jitterfx-theme-preview');
+
+if (savedPreviewTheme === 'light') {
+    dropZoneElement.classList.add('light-theme');
+    themeTogglePreview.checked = true;
+} else {
+    themeTogglePreview.checked = false;
+}
+
+themeTogglePreview.addEventListener('change', () => {
+    if (themeTogglePreview.checked) {
+        dropZoneElement.classList.add('light-theme');
+        localStorage.setItem('jitterfx-theme-preview', 'light');
+    } else {
+        dropZoneElement.classList.remove('light-theme');
+        localStorage.setItem('jitterfx-theme-preview', 'dark');
+    }
+});
