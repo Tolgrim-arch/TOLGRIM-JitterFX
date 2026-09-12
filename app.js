@@ -1,5 +1,9 @@
 ﻿const canvas = document.getElementById('canvas');
-const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true, alpha: true });
+const ctx = canvas.getContext('2d');
+
+// Hidden WebGL canvas for shader processing
+const webglCanvas = document.createElement('canvas');
+const gl = webglCanvas.getContext('webgl', { preserveDrawingBuffer: true, alpha: true });
 
 // UI Elements
 const imageInput = document.getElementById('imageInput');
@@ -147,12 +151,6 @@ let currentImage = null;
 let animationId = null;
 let isExporting = false;
 
-function render(timeMs) {
-    if (!currentImage || isExporting) return;
-    renderManualFrame(timeMs / 1000.0);
-    animationId = requestAnimationFrame(render);
-}
-
 function renderManualFrame(t) {
     gl.uniform1f(uTime, t);
     gl.uniform1f(uSpeed, parseFloat(speedInput.value));
@@ -163,6 +161,62 @@ function renderManualFrame(t) {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 
+// Draw a specific composed frame to a target 2D context
+function drawFinalFrameToContext(targetCtx, width, height, frameIndex, framesCount) {
+    const speed = parseFloat(speedInput.value);
+    const isPingPong = pingpongInput.checked;
+    
+    let t = frameIndex;
+    if (isPingPong && frameIndex >= framesCount) {
+        t = (framesCount - 1) - (frameIndex - framesCount + 1);
+    }
+    
+    // Draw shader to hidden WebGL canvas
+    renderManualFrame((t + 0.1) / speed);
+    
+    // Draw background
+    if (bgPreset.value !== 'transparent') {
+        targetCtx.fillStyle = bgPreset.value === 'custom' ? bgColorPicker.value : bgPreset.value;
+        targetCtx.fillRect(0, 0, width, height);
+    } else {
+        targetCtx.clearRect(0, 0, width, height);
+    }
+    
+    // Composite WebGL canvas
+    targetCtx.drawImage(webglCanvas, 0, 0);
+    
+    // Draw Watermark
+    if (watermarkInput.value.trim() !== '') {
+        const text = watermarkInput.value.trim();
+        const fontSize = Math.max(16, Math.floor(height * 0.035));
+        targetCtx.font = `bold ${fontSize}px sans-serif`;
+        targetCtx.textAlign = 'right';
+        targetCtx.textBaseline = 'bottom';
+        
+        targetCtx.lineWidth = Math.max(2, fontSize * 0.15);
+        targetCtx.strokeStyle = '#000000';
+        targetCtx.strokeText(text, width - 20, height - 20);
+        
+        targetCtx.fillStyle = '#ffffff';
+        targetCtx.fillText(text, width - 20, height - 20);
+    }
+}
+
+function render(timeMs) {
+    if (!currentImage || isExporting) return;
+    
+    const speed = parseFloat(speedInput.value);
+    const framesCount = parseInt(framesInput.value);
+    const isPingPong = pingpongInput.checked;
+    const totalFrames = isPingPong ? (framesCount * 2 - 2) : framesCount;
+    
+    const currentLoopFrame = Math.floor((timeMs / 1000.0) * speed) % Math.max(totalFrames, 1);
+    
+    drawFinalFrameToContext(ctx, canvas.width, canvas.height, currentLoopFrame, framesCount);
+    
+    animationId = requestAnimationFrame(render);
+}
+
 imageInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -170,9 +224,14 @@ imageInput.addEventListener('change', (e) => {
     const img = new Image();
     img.onload = () => {
         currentImage = img;
+        
+        // Size both canvases
+        webglCanvas.width = img.width;
+        webglCanvas.height = img.height;
         canvas.width = img.width;
         canvas.height = img.height;
-        gl.viewport(0, 0, canvas.width, canvas.height);
+        
+        gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
         
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
@@ -186,47 +245,6 @@ imageInput.addEventListener('change', (e) => {
     };
     img.src = URL.createObjectURL(file);
 });
-
-// Final draw to composed canvas for export
-function drawFinalFrameToContext(ctx, width, height, frameIndex, framesCount) {
-    const speed = parseFloat(speedInput.value);
-    const isPingPong = pingpongInput.checked;
-    
-    let t = frameIndex;
-    if (isPingPong && frameIndex >= framesCount) {
-        t = (framesCount - 1) - (frameIndex - framesCount + 1);
-    }
-    
-    // Draw shader to WebGL canvas
-    renderManualFrame((t + 0.1) / speed);
-    
-    // Draw background
-    if (bgPreset.value !== 'transparent') {
-        ctx.fillStyle = bgPreset.value === 'custom' ? bgColorPicker.value : bgPreset.value;
-        ctx.fillRect(0, 0, width, height);
-    } else {
-        ctx.clearRect(0, 0, width, height);
-    }
-    
-    // Draw WebGL canvas
-    ctx.drawImage(canvas, 0, 0);
-    
-    // Draw Watermark
-    if (watermarkInput.value.trim() !== '') {
-        const text = watermarkInput.value.trim();
-        const fontSize = Math.max(16, Math.floor(height * 0.035));
-        ctx.font = `bold ${fontSize}px sans-serif`;
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'bottom';
-        
-        ctx.lineWidth = Math.max(2, fontSize * 0.15);
-        ctx.strokeStyle = '#000000';
-        ctx.strokeText(text, width - 20, height - 20);
-        
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText(text, width - 20, height - 20);
-    }
-}
 
 function disableExport(disable) {
     isExporting = disable;
@@ -326,7 +344,6 @@ exportWebmBtn.addEventListener('click', async () => {
         await new Promise(r => setTimeout(r, delayMs));
     }
     
-    // Capture an extra frame at the end to ensure the last frame registers in the video
     await new Promise(r => setTimeout(r, 50)); 
     mediaRecorder.stop();
 });
