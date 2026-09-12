@@ -64,9 +64,15 @@ const fsSource = `
             vec2 block_uv = floor(v_tex_coord * max(u_sketchy_blocksize, 1.0));
             offset.x = (rand(block_uv + vec2(t, 0.0)) - 0.5) * u_sketchy_amount;
             offset.y = (rand(block_uv + vec2(0.0, t)) - 0.5) * u_sketchy_amount;
-        } else {
+        } else if (u_sketchy_type < 2.5) {
             offset.x = (rand(v_tex_coord + vec2(t, 0.0)) - 0.5) * u_sketchy_amount;
             offset.y = (rand(v_tex_coord + vec2(0.0, t)) - 0.5) * u_sketchy_amount;
+        } else {
+            float freq = max(u_sketchy_blocksize, 1.0);
+            float phaseX = rand(vec2(t, 1.0)) * 6.2831;
+            float phaseY = rand(vec2(1.0, t)) * 6.2831;
+            offset.x = sin(v_tex_coord.y * freq + phaseX) * u_sketchy_amount;
+            offset.y = sin(v_tex_coord.x * freq + phaseY) * u_sketchy_amount;
         }
         
         gl_FragColor = texture2D(tex0, v_tex_coord + offset);
