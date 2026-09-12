@@ -406,3 +406,26 @@ imageInput.addEventListener('change', (e) => {
 
 // Hook into GIF progress via monkeypatching or just modifying the existing event if we could. Since we didn't store the gif variable globally, we can't easily hook it without regex. Let's just do a replace.
 
+
+// Theme Toggle Logic
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('jitterfx-theme');
+const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+
+if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeToggle.innerText = '??';
+} else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeToggle.innerText = '??';
+}
+
+themeToggle.addEventListener('click', () => {
+    let currentTheme = document.documentElement.getAttribute('data-theme');
+    let targetTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    document.documentElement.setAttribute('data-theme', targetTheme);
+    localStorage.setItem('jitterfx-theme', targetTheme);
+    themeToggle.innerText = targetTheme === 'light' ? '??' : '??';
+});
+
