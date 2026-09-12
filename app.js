@@ -9,6 +9,7 @@ const speedInput = document.getElementById('speedInput');
 const framesInput = document.getElementById('framesInput');
 const blockInput = document.getElementById('blockInput');
 const exportBtn = document.getElementById('exportBtn');
+const exportWebmBtn = document.getElementById('exportWebmBtn');
 const statusDiv = document.getElementById('status');
 
 // Value Labels
@@ -193,6 +194,7 @@ imageInput.addEventListener('change', (e) => {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
         
         exportBtn.disabled = false;
+        exportWebmBtn.disabled = false;
         statusDiv.innerText = "Imagen cargada. Previsualizando...";
         
         if (animationId) cancelAnimationFrame(animationId);
@@ -254,4 +256,60 @@ exportBtn.addEventListener('click', () => {
     
     statusDiv.innerText = "Codificando GIF (procesando)...";
     gif.render();
+});
+
+exportWebmBtn.addEventListener('click', async () => {
+    if (!currentImage) return;
+    
+    isExporting = true;
+    if (animationId) cancelAnimationFrame(animationId);
+    exportBtn.disabled = true;
+    exportWebmBtn.disabled = true;
+    
+    const framesCount = parseInt(framesInput.value);
+    const speed = parseFloat(speedInput.value);
+    const delayMs = 1000 / speed;
+    
+    statusDiv.innerText = \Grabando WebM (\ frames)...\;
+    
+    // Create a stream from the canvas
+    const stream = canvas.captureStream(speed);
+    
+    // Attempt to use vp9, fallback if not supported
+    let options = { mimeType: 'video/webm; codecs=vp9' };
+    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        options = { mimeType: 'video/webm' };
+    }
+    
+    const mediaRecorder = new MediaRecorder(stream, options);
+    const chunks = [];
+    
+    mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+    };
+    
+    mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'jitterfx.webm';
+        a.click();
+        
+        statusDiv.innerText = '¡WebM exportado con Transparencia!';
+        isExporting = false;
+        exportBtn.disabled = false;
+        exportWebmBtn.disabled = false;
+        animationId = requestAnimationFrame(render);
+    };
+    
+    mediaRecorder.start();
+    
+    // Render frames manually at correct intervals
+    for (let i = 0; i < framesCount; i++) {
+        renderManualFrame((i + 0.1) / speed);
+        await new Promise(r => setTimeout(r, delayMs));
+    }
+    
+    mediaRecorder.stop();
 });
