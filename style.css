@@ -107,7 +107,7 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
     background-color: white; transition: .3s; border-radius: 50%; z-index: 2;
 }
 .theme-switch input:checked + .slider { background-color: var(--accent-color); border-color: var(--accent-color); }
-.theme-switch input:checked + .slider:before { transform: translateX(30px); background-color: #121212; }
+.theme-switch input:checked + .slider:before { transform: translateX(30px); background-color: white; }
 .theme-switch .slider svg { width: 14px; height: 14px; z-index: 1; color: #fff; }
 .theme-switch input:checked + .slider svg { color: #fff; }
 
