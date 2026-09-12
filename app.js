@@ -1,4 +1,4 @@
-﻿const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // Hidden WebGL canvas for shader processing
@@ -217,34 +217,7 @@ function render(timeMs) {
     animationId = requestAnimationFrame(render);
 }
 
-imageInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const img = new Image();
-    img.onload = () => {
-        currentImage = img;
-        
-        // Size both canvases
-        webglCanvas.width = img.width;
-        webglCanvas.height = img.height;
-        canvas.width = img.width;
-        canvas.height = img.height;
-        
-        gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
-        
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-        
-        exportBtn.disabled = false;
-        exportWebmBtn.disabled = false;
-        statusDiv.innerText = "Imagen cargada. Previsualizando...";
-        
-        if (animationId) cancelAnimationFrame(animationId);
-        animationId = requestAnimationFrame(render);
-    };
-    img.src = URL.createObjectURL(file);
-});
+// Removed old imageInput listener
 
 function disableExport(disable) {
     isExporting = disable;
@@ -281,6 +254,10 @@ exportBtn.addEventListener('click', () => {
         drawFinalFrameToContext(tempCtx, canvas.width, canvas.height, i, framesCount);
         gif.addFrame(tempCtx, { delay: 1000 / speed, copy: true });
     }
+
+    gif.on('progress', function(p) {
+        statusDiv.innerText = `Codificando GIF... ${Math.round(p * 100)}%`;
+    });
 
     gif.on('finished', function(blob) {
         statusDiv.innerText = "¡GIF exportado!";
@@ -347,3 +324,81 @@ exportWebmBtn.addEventListener('click', async () => {
     await new Promise(r => setTimeout(r, 50)); 
     mediaRecorder.stop();
 });
+
+// Drag & Drop UI Logic
+const dropZone = document.getElementById('dropZone');
+const emptyState = document.getElementById('emptyState');
+
+emptyState.addEventListener('click', () => imageInput.click());
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, preventDefaults, false);
+});
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+['dragenter', 'dragover'].forEach(eventName => {
+    dropZone.addEventListener(eventName, () => emptyState.classList.add('dragover'), false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, () => emptyState.classList.remove('dragover'), false);
+});
+
+dropZone.addEventListener('drop', (e) => {
+    let dt = e.dataTransfer;
+    let files = dt.files;
+    if (files.length && files[0].type.startsWith('image/')) {
+        handleFile(files[0]);
+    }
+});
+
+function enableControls() {
+    typeInput.disabled = false;
+    amountInput.disabled = false;
+    speedInput.disabled = false;
+    framesInput.disabled = false;
+    blockInput.disabled = false;
+    bgPreset.disabled = false;
+    watermarkInput.disabled = false;
+    pingpongInput.disabled = false;
+    exportBtn.disabled = false;
+    exportWebmBtn.disabled = false;
+    emptyState.style.display = 'none';
+    canvas.style.display = 'block';
+}
+
+function handleFile(file) {
+    const img = new Image();
+    img.onload = () => {
+        currentImage = img;
+        
+        webglCanvas.width = img.width;
+        webglCanvas.height = img.height;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        
+        gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+        
+        enableControls();
+        statusDiv.innerText = 'Imagen cargada. Previsualizando...';
+        
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = requestAnimationFrame(render);
+    };
+    img.src = URL.createObjectURL(file);
+}
+
+// Override previous imageInput listener
+imageInput.addEventListener('change', (e) => {
+    if (e.target.files.length) handleFile(e.target.files[0]);
+});
+
+
+// Hook into GIF progress via monkeypatching or just modifying the existing event if we could. Since we didn't store the gif variable globally, we can't easily hook it without regex. Let's just do a replace.
+

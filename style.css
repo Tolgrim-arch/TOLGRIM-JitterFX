@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --bg: #121212;
     --panel: #1e1e1e;
     --text: #e0e0e0;
@@ -22,24 +22,42 @@ body {
     flex: 1; display: flex; align-items: center; justify-content: center;
     padding: 20px; overflow: hidden;
     background: repeating-conic-gradient(#222 0% 25%, #181818 0% 50%) 50% / 40px 40px;
+    position: relative;
 }
+.empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #888; text-align: center; cursor: pointer;
+    border: 2px dashed #444; border-radius: 12px;
+    width: 100%; max-width: 500px; height: 100%; max-height: 400px;
+    transition: all 0.2s ease;
+    background: rgba(0,0,0,0.2);
+}
+.empty-state:hover, .empty-state.dragover {
+    border-color: var(--accent); color: var(--accent); background: rgba(187, 134, 252, 0.05);
+}
+.empty-state svg { margin-bottom: 15px; }
 canvas {
     max-width: 100%; max-height: 100%; object-fit: contain;
     box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+    display: none; /* Hidden until image loads */
 }
 .control-group { display: flex; flex-direction: column; gap: 5px; }
 label { font-size: 0.9em; font-weight: 600; color: #ccc; }
-input[type="range"], select, input[type="file"] { width: 100%; }
-input[type="range"] { accent-color: var(--accent); }
-select { padding: 5px; background: #333; color: white; border: 1px solid #555; }
+input[type="range"], select, input[type="file"], input[type="text"] { width: 100%; }
+input[type="range"] { accent-color: var(--accent); cursor: pointer; }
+input[type="text"], select { 
+    padding: 8px; background: #2a2a2a; color: white; 
+    border: 1px solid #444; border-radius: 4px; outline: none;
+}
+input[type="text"]:focus, select:focus { border-color: var(--accent); }
 button {
     background: var(--accent); color: #000; border: none;
     padding: 12px; font-weight: bold; cursor: pointer; border-radius: 4px;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, transform 0.1s;
 }
-button:hover { opacity: 0.9; }
+button:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
 button:disabled { background: #444; color: #888; cursor: not-allowed; }
-#status { font-size: 0.85em; color: #aaa; text-align: center; }
+#status { font-size: 0.85em; color: #aaa; text-align: center; margin-top: auto; }
 h2 { margin: 0 0 10px 0; font-size: 1.5em; text-align: center; color: var(--accent); }
 
 @media (max-width: 768px) {
