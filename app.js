@@ -20,6 +20,8 @@ const bgPreset = document.getElementById('bgPreset');
 const bgColorPicker = document.getElementById('bgColorPicker');
 const watermarkInput = document.getElementById('watermarkInput');
 const pingpongInput = document.getElementById('pingpongInput');
+const resolutionInput = document.getElementById('resolutionInput');
+const exportEstimate = document.getElementById('exportEstimate');
 
 // Value Labels
 const updateLabel = (id, val) => document.getElementById(id).innerText = val;
@@ -36,6 +38,43 @@ bgPreset.addEventListener('change', () => {
         if (bgPreset.value !== 'transparent') bgColorPicker.value = bgPreset.value;
     }
 });
+
+
+function getTargetDimensions() {
+    if (!currentImage) return { w: 0, h: 0 };
+    let w = currentImage.width;
+    let h = currentImage.height;
+    let max = resolutionInput.value;
+    if (max !== 'original') {
+        let maxDim = parseInt(max);
+        let largest = Math.max(w, h);
+        if (largest > maxDim) {
+            let ratio = maxDim / largest;
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+        }
+    }
+    return { w, h };
+}
+
+function updateEstimate() {
+    if (!currentImage) return;
+    const { w, h } = getTargetDimensions();
+    const framesCount = parseInt(framesInput.value);
+    const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
+    
+    // Heuristic: GIF ~0.1 bytes/pixel, WebM ~0.02 bytes/pixel
+    const pixels = w * h * totalFrames;
+    const gifMb = (pixels * 0.1) / (1024 * 1024);
+    const webmMb = (pixels * 0.02) / (1024 * 1024);
+    
+    exportEstimate.innerHTML = `Resolución Final: <strong>${w}x${h} px</strong><br>
+    Estimación: <strong>~${gifMb.toFixed(1)} MB</strong> (GIF) / <strong>~${webmMb.toFixed(1)} MB</strong> (Video)`;
+}
+
+framesInput.addEventListener('input', updateEstimate);
+pingpongInput.addEventListener('change', updateEstimate);
+resolutionInput.addEventListener('change', updateEstimate);
 
 // Shaders
 const vsSource = `
@@ -240,23 +279,24 @@ exportBtn.addEventListener('click', () => {
     const speed = parseFloat(speedInput.value);
     const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
     
-    statusDiv.innerText = `Generando GIF (${totalFrames} frames)...`;
+    const { w, h } = getTargetDimensions();
+    statusDiv.innerText = `Generando GIF (${w}x${h} - ${totalFrames} frames)...`;
     
     const gif = new GIF({
         workers: 2,
         quality: 10,
         workerScript: 'gif.worker.js',
-        width: canvas.width,
-        height: canvas.height
+        width: w,
+        height: h
     });
 
     const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
+    tempCanvas.width = w;
+    tempCanvas.height = h;
     const tempCtx = tempCanvas.getContext('2d');
 
     for (let i = 0; i < totalFrames; i++) {
-        drawFinalFrameToContext(tempCtx, canvas.width, canvas.height, i, framesCount);
+        drawFinalFrameToContext(tempCtx, w, h, i, framesCount);
         gif.addFrame(tempCtx, { delay: 1000 / speed, copy: true });
     }
 
@@ -265,7 +305,7 @@ exportBtn.addEventListener('click', () => {
     });
 
     gif.on('finished', function(blob) {
-        statusDiv.innerText = "Â¡GIF exportado!";
+        statusDiv.innerText = "Ã‚Â¡GIF exportado!";
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -286,11 +326,12 @@ exportWebmBtn.addEventListener('click', async () => {
     const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
     const delayMs = 1000 / speed;
     
-    statusDiv.innerText = `Grabando Video (${totalFrames} frames)...`;
+    const { w, h } = getTargetDimensions();
+    statusDiv.innerText = `Grabando Video (${w}x${h} - ${totalFrames} frames)...`;
     
     const exportCanvas = document.createElement('canvas');
-    exportCanvas.width = canvas.width;
-    exportCanvas.height = canvas.height;
+    exportCanvas.width = w;
+    exportCanvas.height = h;
     const exportCtx = exportCanvas.getContext('2d');
     
     const stream = exportCanvas.captureStream(speed);
@@ -315,14 +356,14 @@ exportWebmBtn.addEventListener('click', async () => {
         a.download = 'jitterfx.webm';
         a.click();
         
-        statusDiv.innerText = 'Â¡Video exportado con Matte/Watermark!';
+        statusDiv.innerText = 'Ã‚Â¡Video exportado con Matte/Watermark!';
         disableExport(false);
     };
     
     mediaRecorder.start();
     
     for (let i = 0; i < totalFrames; i++) {
-        drawFinalFrameToContext(exportCtx, canvas.width, canvas.height, i, framesCount);
+        drawFinalFrameToContext(exportCtx, w, h, i, framesCount);
         await new Promise(r => setTimeout(r, delayMs));
     }
     
@@ -370,10 +411,12 @@ function enableControls() {
     bgPreset.disabled = false;
     watermarkInput.disabled = false;
     pingpongInput.disabled = false;
+    resolutionInput.disabled = false;
     exportBtn.disabled = false;
     exportWebmBtn.disabled = false;
     emptyState.style.display = 'none';
     canvas.style.display = 'block';
+    updateEstimate();
 }
 
 function handleFile(file) {
@@ -456,5 +499,7 @@ themeTogglePreview.addEventListener('change', () => {
         localStorage.setItem('jitterfx-theme-preview', 'dark');
     }
 });
+
+
 
 

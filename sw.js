@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jitterfx-v4';
+const CACHE_NAME = 'jitterfx-v5';
 const ASSETS = [
     './',
     './index.html',

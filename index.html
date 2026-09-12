@@ -84,6 +84,18 @@
                 <label for="pingpongInput" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong</label>
             </div>
 
+            <div class="control-group">
+                <label>Resolución de Salida</label>
+                <select id="resolutionInput" disabled>
+                    <option value="original">Original</option>
+                    <option value="1080">Max 1080p (Recomendado)</option>
+                    <option value="720">Max 720p</option>
+                    <option value="480">Max 480p</option>
+                </select>
+            </div>
+
+            <div id="exportEstimate" style="font-size: 0.85em; opacity: 0.8; text-align: center; margin-bottom: 8px; color: var(--accent-color);"></div>
+
             <div class="control-group" style="flex-direction: row; gap: 10px;">
                 <button id="exportBtn" disabled style="flex: 1;">Exportar GIF</button>
                 <button id="exportWebmBtn" disabled style="flex: 1; background: #03dac6;">Exportar Video</button>
