@@ -1,5 +1,5 @@
-const canvas = document.getElementById('canvas');
-const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+﻿const canvas = document.getElementById('canvas');
+const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true, alpha: true });
 
 // UI Elements
 const imageInput = document.getElementById('imageInput');
@@ -11,6 +11,10 @@ const blockInput = document.getElementById('blockInput');
 const exportBtn = document.getElementById('exportBtn');
 const exportWebmBtn = document.getElementById('exportWebmBtn');
 const statusDiv = document.getElementById('status');
+const bgPreset = document.getElementById('bgPreset');
+const bgColorPicker = document.getElementById('bgColorPicker');
+const watermarkInput = document.getElementById('watermarkInput');
+const pingpongInput = document.getElementById('pingpongInput');
 
 // Value Labels
 const updateLabel = (id, val) => document.getElementById(id).innerText = val;
@@ -18,15 +22,15 @@ amountInput.addEventListener('input', e => updateLabel('amountVal', e.target.val
 speedInput.addEventListener('input', e => updateLabel('speedVal', e.target.value));
 framesInput.addEventListener('input', e => updateLabel('framesVal', e.target.value));
 blockInput.addEventListener('input', e => updateLabel('blockVal', e.target.value));
-typeInput.addEventListener('input', renderManualFrameIfPaused);
-amountInput.addEventListener('input', renderManualFrameIfPaused);
-speedInput.addEventListener('input', renderManualFrameIfPaused);
-framesInput.addEventListener('input', renderManualFrameIfPaused);
-blockInput.addEventListener('input', renderManualFrameIfPaused);
 
-function renderManualFrameIfPaused() {
-    // If we're paused, we shouldn't care much, but it's handy
-}
+bgPreset.addEventListener('change', () => {
+    if (bgPreset.value === 'custom') {
+        bgColorPicker.disabled = false;
+    } else {
+        bgColorPicker.disabled = true;
+        if (bgPreset.value !== 'transparent') bgColorPicker.value = bgPreset.value;
+    }
+});
 
 // Shaders
 const vsSource = `
@@ -106,43 +110,32 @@ function compileShader(gl, source, type) {
     return shader;
 }
 
-const vertexShader = compileShader(gl, vsSource, gl.VERTEX_SHADER);
-const fragmentShader = compileShader(gl, fsSource, gl.FRAGMENT_SHADER);
 const program = gl.createProgram();
-gl.attachShader(program, vertexShader);
-gl.attachShader(program, fragmentShader);
+gl.attachShader(program, compileShader(gl, vsSource, gl.VERTEX_SHADER));
+gl.attachShader(program, compileShader(gl, fsSource, gl.FRAGMENT_SHADER));
 gl.linkProgram(program);
 gl.useProgram(program);
 
-// Buffers
 const posBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    -1.0, -1.0,  1.0, -1.0,  -1.0,  1.0,
-    -1.0,  1.0,  1.0, -1.0,   1.0,  1.0
-]), gl.STATIC_DRAW);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
 const posLoc = gl.getAttribLocation(program, "a_position");
 gl.enableVertexAttribArray(posLoc);
 gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
 const texBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, texBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    0.0, 1.0,  1.0, 1.0,  0.0, 0.0,
-    0.0, 0.0,  1.0, 1.0,  1.0, 0.0
-]), gl.STATIC_DRAW);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0,1, 1,1, 0,0, 0,0, 1,1, 1,0]), gl.STATIC_DRAW);
 const texLoc = gl.getAttribLocation(program, "a_texCoord");
 gl.enableVertexAttribArray(texLoc);
 gl.vertexAttribPointer(texLoc, 2, gl.FLOAT, false, 0, 0);
 
-// Texture
 const texture = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, texture);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 
-// Uniforms
 const uTime = gl.getUniformLocation(program, "u_time");
 const uSpeed = gl.getUniformLocation(program, "u_sketchy_speed");
 const uAmount = gl.getUniformLocation(program, "u_sketchy_amount");
@@ -156,19 +149,10 @@ let isExporting = false;
 
 function render(timeMs) {
     if (!currentImage || isExporting) return;
-    
-    gl.uniform1f(uTime, timeMs / 1000.0);
-    gl.uniform1f(uSpeed, parseFloat(speedInput.value));
-    gl.uniform1f(uAmount, parseFloat(amountInput.value));
-    gl.uniform1f(uType, parseFloat(typeInput.value));
-    gl.uniform1f(uFrames, parseFloat(framesInput.value));
-    gl.uniform1f(uBlocksize, parseFloat(blockInput.value));
-
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    renderManualFrame(timeMs / 1000.0);
     animationId = requestAnimationFrame(render);
 }
 
-// Draw a specific manual frame (for GIF export)
 function renderManualFrame(t) {
     gl.uniform1f(uTime, t);
     gl.uniform1f(uSpeed, parseFloat(speedInput.value));
@@ -203,18 +187,64 @@ imageInput.addEventListener('change', (e) => {
     img.src = URL.createObjectURL(file);
 });
 
+// Final draw to composed canvas for export
+function drawFinalFrameToContext(ctx, width, height, frameIndex, framesCount) {
+    const speed = parseFloat(speedInput.value);
+    const isPingPong = pingpongInput.checked;
+    
+    let t = frameIndex;
+    if (isPingPong && frameIndex >= framesCount) {
+        t = (framesCount - 1) - (frameIndex - framesCount + 1);
+    }
+    
+    // Draw shader to WebGL canvas
+    renderManualFrame((t + 0.1) / speed);
+    
+    // Draw background
+    if (bgPreset.value !== 'transparent') {
+        ctx.fillStyle = bgPreset.value === 'custom' ? bgColorPicker.value : bgPreset.value;
+        ctx.fillRect(0, 0, width, height);
+    } else {
+        ctx.clearRect(0, 0, width, height);
+    }
+    
+    // Draw WebGL canvas
+    ctx.drawImage(canvas, 0, 0);
+    
+    // Draw Watermark
+    if (watermarkInput.value.trim() !== '') {
+        const text = watermarkInput.value.trim();
+        const fontSize = Math.max(16, Math.floor(height * 0.035));
+        ctx.font = `bold ${fontSize}px sans-serif`;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        
+        ctx.lineWidth = Math.max(2, fontSize * 0.15);
+        ctx.strokeStyle = '#000000';
+        ctx.strokeText(text, width - 20, height - 20);
+        
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(text, width - 20, height - 20);
+    }
+}
+
+function disableExport(disable) {
+    isExporting = disable;
+    exportBtn.disabled = disable;
+    exportWebmBtn.disabled = disable;
+    if (disable && animationId) cancelAnimationFrame(animationId);
+    if (!disable && currentImage) animationId = requestAnimationFrame(render);
+}
+
 exportBtn.addEventListener('click', () => {
     if (!currentImage) return;
-    
-    // Stop preview
-    isExporting = true;
-    if (animationId) cancelAnimationFrame(animationId);
-    exportBtn.disabled = true;
+    disableExport(true);
     
     const framesCount = parseInt(framesInput.value);
     const speed = parseFloat(speedInput.value);
+    const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
     
-    statusDiv.innerText = `Generando ${framesCount} frames...`;
+    statusDiv.innerText = `Generando GIF (${totalFrames} frames)...`;
     
     const gif = new GIF({
         workers: 2,
@@ -224,20 +254,14 @@ exportBtn.addEventListener('click', () => {
         height: canvas.height
     });
 
-    for (let i = 0; i < framesCount; i++) {
-        // Calculate the exact time `t` needed so that `floor(u_time * speed)` equals `i`
-        // t * speed = i  => t = i / speed
-        // Adding a slight offset to avoid floating point precision issues on floor()
-        renderManualFrame((i + 0.1) / speed);
-        
-        // Convert webgl canvas to a 2D canvas frame
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        const tempCtx = tempCanvas.getContext('2d');
-        tempCtx.drawImage(canvas, 0, 0);
-        
-        gif.addFrame(tempCanvas, { delay: 1000 / speed });
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
+
+    for (let i = 0; i < totalFrames; i++) {
+        drawFinalFrameToContext(tempCtx, canvas.width, canvas.height, i, framesCount);
+        gif.addFrame(tempCtx, { delay: 1000 / speed, copy: true });
     }
 
     gif.on('finished', function(blob) {
@@ -247,35 +271,30 @@ exportBtn.addEventListener('click', () => {
         a.href = url;
         a.download = 'jitterfx.gif';
         a.click();
-        
-        // Resume preview
-        isExporting = false;
-        exportBtn.disabled = false;
-        animationId = requestAnimationFrame(render);
+        disableExport(false);
     });
     
-    statusDiv.innerText = "Codificando GIF (procesando)...";
     gif.render();
 });
 
 exportWebmBtn.addEventListener('click', async () => {
     if (!currentImage) return;
-    
-    isExporting = true;
-    if (animationId) cancelAnimationFrame(animationId);
-    exportBtn.disabled = true;
-    exportWebmBtn.disabled = true;
+    disableExport(true);
     
     const framesCount = parseInt(framesInput.value);
     const speed = parseFloat(speedInput.value);
+    const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
     const delayMs = 1000 / speed;
     
-    statusDiv.innerText = \Grabando WebM (\ frames)...\;
+    statusDiv.innerText = `Grabando Video (${totalFrames} frames)...`;
     
-    // Create a stream from the canvas
-    const stream = canvas.captureStream(speed);
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = canvas.width;
+    exportCanvas.height = canvas.height;
+    const exportCtx = exportCanvas.getContext('2d');
     
-    // Attempt to use vp9, fallback if not supported
+    const stream = exportCanvas.captureStream(speed);
+    
     let options = { mimeType: 'video/webm; codecs=vp9' };
     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
         options = { mimeType: 'video/webm' };
@@ -296,20 +315,18 @@ exportWebmBtn.addEventListener('click', async () => {
         a.download = 'jitterfx.webm';
         a.click();
         
-        statusDiv.innerText = '�WebM exportado con Transparencia!';
-        isExporting = false;
-        exportBtn.disabled = false;
-        exportWebmBtn.disabled = false;
-        animationId = requestAnimationFrame(render);
+        statusDiv.innerText = '¡Video exportado con Matte/Watermark!';
+        disableExport(false);
     };
     
     mediaRecorder.start();
     
-    // Render frames manually at correct intervals
-    for (let i = 0; i < framesCount; i++) {
-        renderManualFrame((i + 0.1) / speed);
+    for (let i = 0; i < totalFrames; i++) {
+        drawFinalFrameToContext(exportCtx, canvas.width, canvas.height, i, framesCount);
         await new Promise(r => setTimeout(r, delayMs));
     }
     
+    // Capture an extra frame at the end to ensure the last frame registers in the video
+    await new Promise(r => setTimeout(r, 50)); 
     mediaRecorder.stop();
 });

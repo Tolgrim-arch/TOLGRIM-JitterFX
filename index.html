@@ -45,9 +45,33 @@
                 <input type="range" id="blockInput" min="1" max="100" step="1" value="20">
             </div>
 
+            <div class="control-group">
+                <label>Color de Fondo (Matte)</label>
+                <div style="display: flex; gap: 5px;">
+                    <input type="color" id="bgColorPicker" value="#000000" style="width: 40px; padding: 0;" disabled>
+                    <select id="bgPreset" style="flex: 1;">
+                        <option value="transparent">Transparente</option>
+                        <option value="#000000">Twitter Oscuro</option>
+                        <option value="#15202b">Twitter Dim</option>
+                        <option value="#ffffff">Twitter Claro</option>
+                        <option value="custom">Personalizado...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Marca de Agua</label>
+                <input type="text" id="watermarkInput" placeholder="@usuario o Firma" style="padding: 5px; background: #333; color: white; border: 1px solid #555;">
+            </div>
+
+            <div class="control-group" style="flex-direction: row; align-items: center; margin-bottom: 10px;">
+                <input type="checkbox" id="pingpongInput" style="width: auto; cursor: pointer;">
+                <label for="pingpongInput" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong (Ida y Vuelta)</label>
+            </div>
+
             <div class="control-group" style="flex-direction: row; gap: 10px;">
                 <button id="exportBtn" disabled style="flex: 1;">Exportar GIF</button>
-                <button id="exportWebmBtn" disabled style="flex: 1; background: #03dac6;">Exportar WebM</button>
+                <button id="exportWebmBtn" disabled style="flex: 1; background: #03dac6;">Exportar Video</button>
             </div>
             <div id="status">Esperando imagen...</div>
         </aside>
