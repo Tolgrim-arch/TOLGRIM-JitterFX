@@ -26,7 +26,7 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 .sidebar.light-theme {
-    --panel: #ffffff;
+    --panel: #f0f2f5;
     --text: #121212;
     --accent-color: #6200ee;
     --border: #d0d0d0;
@@ -122,10 +122,10 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
 }
 
 
-.toggle-btn { background: #444; color: #fff; transition: background 0.2s; }
-.toggle-btn.active { background: var(--accent-color); color: #000; }
-.sidebar.light-theme .toggle-btn { background: #e0e0e0; color: #333; }
-.sidebar.light-theme .toggle-btn.active { background: var(--accent-color); color: #fff; }
+.toggle-btn { background: #444; color: #fff; transition: background 0.2s, border 0.2s; border: 1px solid transparent; }
+.toggle-btn.active { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
+.sidebar.light-theme .toggle-btn { background: #ffffff; color: #333; border: 1px solid #d0d0d0; }
+.sidebar.light-theme .toggle-btn.active { background: var(--accent-color); color: #ffffff; border-color: var(--accent-color); }
 
 .section-card {
     background: rgba(0, 0, 0, 0.15);
@@ -134,8 +134,9 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
     padding: 15px;
     margin-bottom: 20px;
 }
-.light-theme .sidebar .section-card {
-    background: rgba(0, 0, 0, 0.03);
+.sidebar.light-theme .section-card {
+    background: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 .section-title {
     font-size: 0.85em;
@@ -152,4 +153,10 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
 }
 .section-card .control-group:last-child {
     margin-bottom: 0;
+}
+
+.sidebar.light-theme input[type="range"] {
+    background-color: rgba(0, 0, 0, 0.08);
+    height: 6px;
+    border-radius: 3px;
 }
