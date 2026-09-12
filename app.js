@@ -449,3 +449,5 @@ themeTogglePreview.addEventListener('change', () => {
         localStorage.setItem('jitterfx-theme-preview', 'dark');
     }
 });
+
+
