@@ -31,14 +31,20 @@
                 </label>
             </div>
             
-            <div class="control-group">
-                <label>Imagen (PNG/JPG/WEBP)</label>
+            <div class="section-card">
+                <div class="section-title">🖼️ 1. Entrada</div>
+                <div class="control-group">
+                    <label>Imagen (PNG/JPG/WEBP)</label>
                 <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp">
                 <div id="imageInfo" style="font-size: 0.85em; opacity: 0.8; margin-top: 2px; display: none; line-height: 1.4;"></div>
             </div>
             
-            <div class="control-group">
-                <label>Presets Mágicos</label>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title">🌪️ 2. Motor Matemático</div>
+                <div class="control-group">
+                    <label>Presets Mágicos</label>
                 <div style="display: flex; gap: 5px; flex-wrap: wrap;">
                     <button id="presetPencil" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Estilo de dibujo a lápiz tembloroso">🖋️ Lápiz</button>
                     <button id="presetVHS" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Estilo cámara antigua / estática">📺 VHS</button>
@@ -78,8 +84,12 @@
                 <input type="range" id="blockInput" min="1" max="100" step="1" value="20" disabled>
             </div>
 
-            <div class="control-group">
-                <label>Color de Fondo (Matte) <span title="El color visible debajo de imágenes con partes transparentes (PNG/WEBP)." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title">🎨 3. Efectos y Máscaras</div>
+                <div class="control-group">
+                    <label>Color de Fondo (Matte) <span title="El color visible debajo de imágenes con partes transparentes (PNG/WEBP)." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <div style="display: flex; gap: 5px;">
                     <input type="color" id="bgColorPicker" value="#000000" style="width: 40px; padding: 0; cursor: pointer;" disabled>
                     <select id="bgPreset" style="flex: 1;" disabled>
@@ -161,8 +171,12 @@
                 <label for="pingpongInput" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong <span title="La animación rebota hacia adelante y hacia atrás. Útil para hacer bucles perfectos (seamless) que no saltan de golpe." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
             </div>
 
-            <div class="control-group">
-                <label>Resolución de Salida <span title="Escala la imagen antes de codificar el video. Evita colapsos de memoria RAM en lienzos gigantes (4K+) y permite sortear los límites de tamaño de Twitter." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+            </div>
+
+            <div class="section-card" style="margin-bottom: 0; background: rgba(187, 134, 252, 0.05); border-color: rgba(187, 134, 252, 0.3);">
+                <div class="section-title" style="color: var(--accent-color);">💾 4. Exportación</div>
+                <div class="control-group">
+                    <label>Resolución de Salida <span title="Escala la imagen antes de codificar el video. Evita colapsos de memoria RAM en lienzos gigantes (4K+) y permite sortear los límites de tamaño de Twitter." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <select id="resolutionInput" disabled>
                     <option value="original">Original</option>
                     <option value="1080">Max 1080p (Recomendado)</option>
@@ -176,6 +190,8 @@
             <div class="control-group" style="flex-direction: row; gap: 10px;">
                 <button id="exportBtn" disabled style="flex: 1;">Exportar GIF</button>
                 <button id="exportWebmBtn" disabled style="flex: 1; background: #03dac6;">Exportar Video</button>
+            </div>
+            
             </div>
             
             <div id="status">Esperando imagen...</div>
