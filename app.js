@@ -395,7 +395,7 @@ function drawFinalFrameToContext(targetCtx, width, height, frameIndex, framesCou
     }
     
     // Composite WebGL canvas
-    targetCtx.drawImage(webglCanvas, 0, 0);
+    targetCtx.drawImage(webglCanvas, 0, 0, width, height);
     
     // Draw Watermark
     if (watermarkInput.value.trim() !== '') {
@@ -418,7 +418,7 @@ function drawFinalFrameToContext(targetCtx, width, height, frameIndex, framesCou
         else if (pos === 'bl') { targetCtx.textAlign = 'left'; x = padding; y = height - padding; }
         else if (pos === 'tr') { targetCtx.textAlign = 'right'; x = width - padding; y = padding; }
         else if (pos === 'tl') { targetCtx.textAlign = 'left'; x = padding; y = padding; }
-        else if (pos === 'c') { targetCtx.textAlign = 'center'; x = width/2; y = height/2; }
+        else { targetCtx.textAlign = 'center'; x = width / 2; y = height / 2; }
         
         const bWidth = parseInt(wmBorderWidth.value);
         if (bWidth > 0) {
@@ -433,7 +433,7 @@ function drawFinalFrameToContext(targetCtx, width, height, frameIndex, framesCou
         targetCtx.globalAlpha = 1.0;
     }
     
-    if (isMaskViewEnabled && maskCanvas) {
+    if (isMaskViewEnabled && maskCanvas && !isExporting) {
         targetCtx.globalCompositeOperation = 'multiply';
         targetCtx.globalAlpha = 0.5;
         targetCtx.fillStyle = 'red';
@@ -488,6 +488,11 @@ exportBtn.addEventListener('click', () => {
     const { w, h } = getTargetDimensions();
     statusDiv.innerText = `Generando GIF (${w}x${h} - ${totalFrames} frames)...`;
     
+    exportModal.style.display = 'flex';
+    exportModalTitle.innerText = 'Renderizando GIF';
+    exportModalText.innerText = `Resolución: ${w}x${h} | Frames: ${totalFrames}`;
+    exportModalProgress.style.width = '0%';
+    
     const gif = new GIF({
         workers: 2,
         quality: 10,
@@ -508,6 +513,7 @@ exportBtn.addEventListener('click', () => {
 
     gif.on('progress', function(p) {
         statusDiv.innerText = `Codificando GIF... ${Math.round(p * 100)}%`;
+        exportModalProgress.style.width = `${Math.round(p * 100)}%`;
     });
 
     gif.on('finished', function(blob) {
@@ -535,6 +541,11 @@ exportWebmBtn.addEventListener('click', async () => {
     
     const { w, h } = getTargetDimensions();
     statusDiv.innerText = `Grabando Video (${w}x${h} - ${totalFrames} frames)...`;
+    
+    exportModal.style.display = 'flex';
+    exportModalTitle.innerText = 'Renderizando WebM';
+    exportModalText.innerText = `Grabando canvas en tiempo real...`;
+    exportModalProgress.style.width = '0%';
     
     const exportCanvas = document.createElement('canvas');
     exportCanvas.width = w;
@@ -572,6 +583,7 @@ exportWebmBtn.addEventListener('click', async () => {
     
     for (let i = 0; i < totalFrames; i++) {
         drawFinalFrameToContext(exportCtx, w, h, i, framesCount);
+        exportModalProgress.style.width = `${Math.round((i / totalFrames) * 100)}%`;
         await new Promise(r => setTimeout(r, delayMs));
     }
     
