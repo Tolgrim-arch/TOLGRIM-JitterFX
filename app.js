@@ -407,67 +407,6 @@ imageInput.addEventListener('change', (e) => {
 // Hook into GIF progress via monkeypatching or just modifying the existing event if we could. Since we didn't store the gif variable globally, we can't easily hook it without regex. Let's just do a replace.
 
 
-const sidebarElement = document.getElementById('sidebarElement');
-const themeToggleSidebar = document.getElementById('themeToggleSidebar');
-const savedSidebarTheme = localStorage.getItem('jitterfx-theme-sidebar');
-
-if (savedSidebarTheme === 'light') {
-    sidebarElement.classList.add('light-theme');
-    themeToggleSidebar.checked = true;
-} else {
-    themeToggleSidebar.checked = false;
-}
-
-themeToggleSidebar.addEventListener('change', () => {
-    if (themeToggleSidebar.checked) {
-        sidebarElement.classList.add('light-theme');
-        localStorage.setItem('jitterfx-theme-sidebar', 'light');
-    } else {
-        sidebarElement.classList.remove('light-theme');
-        localStorage.setItem('jitterfx-theme-sidebar', 'dark');
-    }
-});
-
-const dropZoneElement = document.getElementById('dropZone');
-const themeTogglePreview = document.getElementById('themeTogglePreview');
-const savedPreviewTheme = localStorage.getItem('jitterfx-theme-preview');
-
-if (savedPreviewTheme === 'light') {
-    dropZoneElement.classList.add('light-theme');
-    themeTogglePreview.checked = true;
-} else {
-    themeTogglePreview.checked = false;
-}
-
-themeTogglePreview.addEventListener('change', () => {
-    if (themeTogglePreview.checked) {
-        dropZoneElement.classList.add('light-theme');
-        localStorage.setItem('jitterfx-theme-preview', 'light');
-    } else {
-        dropZoneElement.classList.remove('light-theme');
-        localStorage.setItem('jitterfx-theme-preview', 'dark');
-    }
-});
-
-const dropZoneElement = document.getElementById('dropZone'); // Same as preview
-const themeTogglePreview = document.getElementById('themeTogglePreview');
-const savedPreviewTheme = localStorage.getItem('jitterfx-theme-preview');
-
-if (savedPreviewTheme === 'light') {
-    dropZoneElement.classList.add('light-theme');
-    themeTogglePreview.innerHTML = iconMoon;
-} else {
-    themeTogglePreview.innerHTML = iconSun;
-}
-
-themeTogglePreview.addEventListener('click', () => {
-    dropZoneElement.classList.toggle('light-theme');
-    const isLight = dropZoneElement.classList.contains('light-theme');
-    localStorage.setItem('jitterfx-theme-preview', isLight ? 'light' : 'dark');
-    themeTogglePreview.innerHTML = isLight ? iconMoon : iconSun;
-});
-
-
 
 const sidebarElement = document.getElementById('sidebarElement');
 const themeToggleSidebar = document.getElementById('themeToggleSidebar');
