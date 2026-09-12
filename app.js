@@ -1,4 +1,4 @@
-const canvas = document.getElementById('canvas');
+﻿const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // Hidden WebGL canvas for shader processing
@@ -264,7 +264,7 @@ exportBtn.addEventListener('click', () => {
     });
 
     gif.on('finished', function(blob) {
-        statusDiv.innerText = "¡GIF exportado!";
+        statusDiv.innerText = "Â¡GIF exportado!";
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -314,7 +314,7 @@ exportWebmBtn.addEventListener('click', async () => {
         a.download = 'jitterfx.webm';
         a.click();
         
-        statusDiv.innerText = '¡Video exportado con Matte/Watermark!';
+        statusDiv.innerText = 'Â¡Video exportado con Matte/Watermark!';
         disableExport(false);
     };
     
@@ -407,25 +407,43 @@ imageInput.addEventListener('change', (e) => {
 // Hook into GIF progress via monkeypatching or just modifying the existing event if we could. Since we didn't store the gif variable globally, we can't easily hook it without regex. Let's just do a replace.
 
 
-// Theme Toggle Logic
-const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('jitterfx-theme');
-const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+const iconMoon = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+const iconSun = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
 
-if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
-    document.documentElement.setAttribute('data-theme', 'light');
-    themeToggle.innerText = '??';
+const sidebarElement = document.getElementById('sidebarElement');
+const themeToggleSidebar = document.getElementById('themeToggleSidebar');
+const savedSidebarTheme = localStorage.getItem('jitterfx-theme-sidebar');
+
+if (savedSidebarTheme === 'light') {
+    sidebarElement.classList.add('light-theme');
+    themeToggleSidebar.innerHTML = iconMoon;
 } else {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    themeToggle.innerText = '??';
+    themeToggleSidebar.innerHTML = iconSun;
 }
 
-themeToggle.addEventListener('click', () => {
-    let currentTheme = document.documentElement.getAttribute('data-theme');
-    let targetTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    document.documentElement.setAttribute('data-theme', targetTheme);
-    localStorage.setItem('jitterfx-theme', targetTheme);
-    themeToggle.innerText = targetTheme === 'light' ? '??' : '??';
+themeToggleSidebar.addEventListener('click', () => {
+    sidebarElement.classList.toggle('light-theme');
+    const isLight = sidebarElement.classList.contains('light-theme');
+    localStorage.setItem('jitterfx-theme-sidebar', isLight ? 'light' : 'dark');
+    themeToggleSidebar.innerHTML = isLight ? iconMoon : iconSun;
 });
+
+const dropZoneElement = document.getElementById('dropZone'); // Same as preview
+const themeTogglePreview = document.getElementById('themeTogglePreview');
+const savedPreviewTheme = localStorage.getItem('jitterfx-theme-preview');
+
+if (savedPreviewTheme === 'light') {
+    dropZoneElement.classList.add('light-theme');
+    themeTogglePreview.innerHTML = iconMoon;
+} else {
+    themeTogglePreview.innerHTML = iconSun;
+}
+
+themeTogglePreview.addEventListener('click', () => {
+    dropZoneElement.classList.toggle('light-theme');
+    const isLight = dropZoneElement.classList.contains('light-theme');
+    localStorage.setItem('jitterfx-theme-preview', isLight ? 'light' : 'dark');
+    themeTogglePreview.innerHTML = isLight ? iconMoon : iconSun;
+});
+
 
