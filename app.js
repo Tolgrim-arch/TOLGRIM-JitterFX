@@ -30,6 +30,125 @@ const pingpongInput = document.getElementById('pingpongInput');
 const resolutionInput = document.getElementById('resolutionInput');
 const exportEstimate = document.getElementById('exportEstimate');
 
+const maskCanvas = document.createElement('canvas');
+const maskCtx = maskCanvas.getContext('2d');
+let maskTexture;
+let uMaskLoc;
+let isBrushEnabled = false;
+let isMaskViewEnabled = false;
+let isPainting = false;
+let maskNeedsUpdate = false;
+
+const brushEnableBtn = document.getElementById('brushEnableBtn');
+const brushViewBtn = document.getElementById('brushViewBtn');
+const brushControlsDiv = document.getElementById('brushControlsDiv');
+const brushModeAddBtn = document.getElementById('brushModeAddBtn');
+const brushModeSubBtn = document.getElementById('brushModeSubBtn');
+const brushSizeInput = document.getElementById('brushSizeInput');
+const brushHardnessInput = document.getElementById('brushHardnessInput');
+const maskClearBtn = document.getElementById('maskClearBtn');
+const maskFillBtn = document.getElementById('maskFillBtn');
+
+brushEnableBtn.addEventListener('click', () => {
+    isBrushEnabled = !isBrushEnabled;
+    brushEnableBtn.classList.toggle('active', isBrushEnabled);
+    brushControlsDiv.style.display = isBrushEnabled ? 'flex' : 'none';
+    canvas.style.cursor = isBrushEnabled ? 'crosshair' : 'default';
+});
+
+brushViewBtn.addEventListener('click', () => {
+    isMaskViewEnabled = !isMaskViewEnabled;
+    brushViewBtn.classList.toggle('active', isMaskViewEnabled);
+});
+
+let brushMode = 'add';
+brushModeAddBtn.addEventListener('click', () => { brushMode = 'add'; brushModeAddBtn.classList.add('active'); brushModeSubBtn.classList.remove('active'); });
+brushModeSubBtn.addEventListener('click', () => { brushMode = 'sub'; brushModeSubBtn.classList.add('active'); brushModeAddBtn.classList.remove('active'); });
+
+function fillMask(color) {
+    if (!maskCtx) return;
+    maskCtx.fillStyle = color;
+    maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+    maskNeedsUpdate = true;
+}
+
+maskClearBtn.addEventListener('click', () => fillMask('#000000'));
+maskFillBtn.addEventListener('click', () => fillMask('#ffffff'));
+
+function getPointerPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const imageAspect = canvas.width / canvas.height;
+    const boxAspect = rect.width / rect.height;
+    
+    let renderedWidth, renderedHeight, offsetX, offsetY;
+    if (imageAspect > boxAspect) {
+        renderedWidth = rect.width;
+        renderedHeight = rect.width / imageAspect;
+        offsetX = 0;
+        offsetY = (rect.height - renderedHeight) / 2;
+    } else {
+        renderedHeight = rect.height;
+        renderedWidth = rect.height * imageAspect;
+        offsetX = (rect.width - renderedWidth) / 2;
+        offsetY = 0;
+    }
+    
+    const x = (e.clientX - rect.left - offsetX) * (canvas.width / renderedWidth);
+    const y = (e.clientY - rect.top - offsetY) * (canvas.height / renderedHeight);
+    return { x, y };
+}
+
+function paint(e) {
+    if (!currentImage) return;
+    const { x, y } = getPointerPos(e);
+    const size = parseInt(brushSizeInput.value);
+    const hardness = parseInt(brushHardnessInput.value) / 100;
+    
+    maskCtx.beginPath();
+    maskCtx.arc(x, y, size, 0, Math.PI * 2);
+    
+    if (hardness >= 0.95) {
+        maskCtx.fillStyle = brushMode === 'add' ? '#ffffff' : '#000000';
+    } else {
+        const gradient = maskCtx.createRadialGradient(x, y, size * hardness, x, y, size);
+        if (brushMode === 'add') {
+            gradient.addColorStop(0, 'rgba(255,255,255,1)');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+        } else {
+            gradient.addColorStop(0, 'rgba(0,0,0,1)');
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        }
+        maskCtx.fillStyle = gradient;
+    }
+    
+    // For smooth drawing and erasing with gradients
+    maskCtx.globalCompositeOperation = brushMode === 'add' ? 'source-over' : 'destination-out';
+    if (brushMode === 'sub' && hardness >= 0.95) {
+        maskCtx.fillStyle = 'rgba(0,0,0,1)';
+    }
+    
+    maskCtx.fill();
+    maskCtx.globalCompositeOperation = 'source-over';
+    
+    // If erasing, we used destination-out which makes it transparent. We need black background.
+    // Actually, drawing white/transparent over a black background is easier.
+    // Let's ensure the canvas is black where transparent.
+    // In WebGL we only read the Red channel, so transparency acts as 0 (black)! This is perfect.
+    maskNeedsUpdate = true;
+}
+
+canvas.addEventListener('mousedown', (e) => {
+    if (!isBrushEnabled) return;
+    isPainting = true;
+    paint(e);
+});
+canvas.addEventListener('mousemove', (e) => {
+    if (!isBrushEnabled || !isPainting) return;
+    paint(e);
+});
+window.addEventListener('mouseup', () => isPainting = false);
+
+
 // Value Labels
 const updateLabel = (id, val) => document.getElementById(id).innerText = val;
 amountInput.addEventListener('input', e => updateLabel('amountVal', e.target.value));
@@ -75,8 +194,8 @@ function updateEstimate() {
     const gifMb = (pixels * 0.1) / (1024 * 1024);
     const webmMb = (pixels * 0.02) / (1024 * 1024);
     
-    exportEstimate.innerHTML = `Resolución Final: <strong>${w}x${h} px</strong><br>
-    Estimación: <strong>~${gifMb.toFixed(1)} MB</strong> (GIF) / <strong>~${webmMb.toFixed(1)} MB</strong> (Video)`;
+    exportEstimate.innerHTML = `ResoluciÃ³n Final: <strong>${w}x${h} px</strong><br>
+    EstimaciÃ³n: <strong>~${gifMb.toFixed(1)} MB</strong> (GIF) / <strong>~${webmMb.toFixed(1)} MB</strong> (Video)`;
 }
 
 framesInput.addEventListener('input', updateEstimate);
@@ -107,6 +226,7 @@ const fsSource = `
     uniform float u_sketchy_frames;
     uniform float u_sketchy_blocksize;
     uniform sampler2D tex0;
+    uniform sampler2D u_mask;
     varying vec2 v_tex_coord;
 
     float rand(vec2 co) {
@@ -125,6 +245,7 @@ const fsSource = `
     }
 
     void main() {
+        float maskVal = texture2D(u_mask, v_tex_coord).r;
         float t = mod(floor(u_time * max(u_sketchy_speed, 1.0)), max(u_sketchy_frames, 1.0));
         vec2 offset = vec2(0.0);
         
@@ -150,6 +271,7 @@ const fsSource = `
             offset.y = (value_noise(grid + vec2(0.0, t * 10.0)) - 0.5) * u_sketchy_amount;
         }
         
+        offset *= maskVal;
         gl_FragColor = texture2D(tex0, v_tex_coord + offset);
     }
 `;
@@ -186,10 +308,21 @@ gl.enableVertexAttribArray(texLoc);
 gl.vertexAttribPointer(texLoc, 2, gl.FLOAT, false, 0, 0);
 
 const texture = gl.createTexture();
+gl.activeTexture(gl.TEXTURE0);
 gl.bindTexture(gl.TEXTURE_2D, texture);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+maskTexture = gl.createTexture();
+gl.activeTexture(gl.TEXTURE1);
+gl.bindTexture(gl.TEXTURE_2D, maskTexture);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+uMaskLoc = gl.getUniformLocation(program, "u_mask");
+gl.uniform1i(uMaskLoc, 1);
 
 const uTime = gl.getUniformLocation(program, "u_time");
 const uSpeed = gl.getUniformLocation(program, "u_sketchy_speed");
@@ -271,10 +404,28 @@ function drawFinalFrameToContext(targetCtx, width, height, frameIndex, framesCou
         
         targetCtx.globalAlpha = 1.0;
     }
+    
+    if (isMaskViewEnabled && maskCanvas) {
+        targetCtx.globalCompositeOperation = 'multiply';
+        targetCtx.globalAlpha = 0.5;
+        targetCtx.fillStyle = 'red';
+        targetCtx.fillRect(0, 0, width, height);
+        targetCtx.globalCompositeOperation = 'screen';
+        targetCtx.drawImage(maskCanvas, 0, 0, width, height);
+        targetCtx.globalCompositeOperation = 'source-over';
+        targetCtx.globalAlpha = 1.0;
+    }
 }
 
 function render(timeMs) {
     if (!currentImage || isExporting) return;
+    
+    if (maskNeedsUpdate) {
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, maskTexture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, maskCanvas);
+        maskNeedsUpdate = false;
+    }
     
     const speed = parseFloat(speedInput.value);
     const framesCount = parseInt(framesInput.value);
@@ -332,7 +483,7 @@ exportBtn.addEventListener('click', () => {
     });
 
     gif.on('finished', function(blob) {
-        statusDiv.innerText = "Ã‚Â¡GIF exportado!";
+        statusDiv.innerText = "Ãƒâ€šÃ‚Â¡GIF exportado!";
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -383,7 +534,7 @@ exportWebmBtn.addEventListener('click', async () => {
         a.download = 'jitterfx.webm';
         a.click();
         
-        statusDiv.innerText = 'Ã‚Â¡Video exportado con Matte/Watermark!';
+        statusDiv.innerText = 'Ãƒâ€šÃ‚Â¡Video exportado con Matte/Watermark!';
         disableExport(false);
     };
     
@@ -437,6 +588,8 @@ function enableControls() {
     blockInput.disabled = false;
     bgPreset.disabled = false;
     watermarkInput.disabled = false;
+    brushEnableBtn.disabled = false;
+    brushViewBtn.disabled = false;
     wmPos.disabled = false;
     wmColor.disabled = false;
     wmBorderColor.disabled = false;
@@ -462,8 +615,13 @@ function handleFile(file) {
         webglCanvas.height = img.height;
         canvas.width = img.width;
         canvas.height = img.height;
+        maskCanvas.width = img.width;
+        maskCanvas.height = img.height;
+        
+        fillMask('#ffffff'); // Default: everything jitters
         
         gl.viewport(0, 0, webglCanvas.width, webglCanvas.height);
+        gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
         
@@ -556,3 +714,4 @@ if (window.location.search.includes('shared=true')) {
 // Watermark UI listeners
 wmBold.addEventListener('click', () => wmBold.classList.toggle('active'));
 wmItalic.addEventListener('click', () => wmItalic.classList.toggle('active'));
+

@@ -102,6 +102,36 @@
                 </div>
             </div>
 
+            <div class="control-group">
+                <label>Máscara de Aislamiento (Pincel)</label>
+                <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+                    <button id="brushEnableBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled>Activar Pincel</button>
+                    <button id="brushViewBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled>Ver Máscara</button>
+                </div>
+                
+                <div id="brushControlsDiv" style="display: none; flex-direction: column; gap: 5px;">
+                    <div style="display: flex; gap: 5px;">
+                        <button id="brushModeAddBtn" class="toggle-btn active" style="flex: 1; padding: 4px;">+ Jitter</button>
+                        <button id="brushModeSubBtn" class="toggle-btn" style="flex: 1; padding: 4px;">- Estático</button>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 5px; font-size: 0.8em;">
+                        <span>Tamaño:</span>
+                        <input type="range" id="brushSizeInput" min="10" max="400" value="50" style="flex: 2; width: auto;">
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 5px; font-size: 0.8em;">
+                        <span>Dureza:</span>
+                        <input type="range" id="brushHardnessInput" min="0" max="100" value="50" style="flex: 2; width: auto;">
+                    </div>
+                    
+                    <div style="display: flex; gap: 5px; margin-top: 2px;">
+                        <button id="maskClearBtn" style="flex: 1; background: #555; padding: 4px; font-size: 0.8em;">Borrar Todo</button>
+                        <button id="maskFillBtn" style="flex: 1; background: #555; padding: 4px; font-size: 0.8em;">Llenar Todo</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="control-group" style="flex-direction: row; align-items: center; margin-bottom: 10px;">
                 <input type="checkbox" id="pingpongInput" style="width: auto; cursor: pointer;" disabled>
                 <label for="pingpongInput" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong</label>
