@@ -149,7 +149,31 @@ canvas.addEventListener('mousemove', (e) => {
 window.addEventListener('mouseup', () => isPainting = false);
 
 
+
+const presetPencil = document.getElementById('presetPencil');
+const presetVHS = document.getElementById('presetVHS');
+const presetWater = document.getElementById('presetWater');
+const presetChaos = document.getElementById('presetChaos');
+
+const exportModal = document.getElementById('exportModal');
+const exportModalTitle = document.getElementById('exportModalTitle');
+const exportModalProgress = document.getElementById('exportModalProgress');
+const exportModalText = document.getElementById('exportModalText');
+
+function applyPreset(type, amount, speed, block) {
+    typeInput.value = type; updateLabel('typeVal', typeInput.options[typeInput.selectedIndex].text);
+    amountInput.value = amount; updateLabel('amountVal', amount);
+    speedInput.value = speed; updateLabel('speedVal', speed + 'x');
+    blockInput.value = block; updateLabel('blockVal', block);
+}
+
+presetPencil.addEventListener('click', () => applyPreset(1, 1.0, 1.5, 30));
+presetVHS.addEventListener('click', () => applyPreset(2, 2.5, 2.0, 10));
+presetWater.addEventListener('click', () => applyPreset(3, 3.0, 0.5, 5));
+presetChaos.addEventListener('click', () => applyPreset(4, 5.0, 3.0, 40));
+
 // Value Labels
+
 const updateLabel = (id, val) => document.getElementById(id).innerText = val;
 amountInput.addEventListener('input', e => updateLabel('amountVal', e.target.value));
 speedInput.addEventListener('input', e => updateLabel('speedVal', e.target.value));
@@ -189,13 +213,17 @@ function updateEstimate() {
     const framesCount = parseInt(framesInput.value);
     const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
     
-    // Heuristic: GIF ~0.1 bytes/pixel, WebM ~0.02 bytes/pixel
     const pixels = w * h * totalFrames;
-    const gifMb = (pixels * 0.1) / (1024 * 1024);
-    const webmMb = (pixels * 0.02) / (1024 * 1024);
+    const gifBytes = pixels * 0.1;
+    const webmBytes = pixels * 0.02;
     
-    exportEstimate.innerHTML = `ResoluciÃ³n Final: <strong>${w}x${h} px</strong><br>
-    EstimaciÃ³n: <strong>~${gifMb.toFixed(1)} MB</strong> (GIF) / <strong>~${webmMb.toFixed(1)} MB</strong> (Video)`;
+    const formatSize = (bytes) => {
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    };
+    
+    exportEstimate.innerHTML = `Resolución Final: <strong>${w}x${h} px</strong><br>
+    Estimación: <strong>~${formatSize(gifBytes)}</strong> (GIF) / <strong>~${formatSize(webmBytes)}</strong> (Video)`;
 }
 
 framesInput.addEventListener('input', updateEstimate);
@@ -483,7 +511,8 @@ exportBtn.addEventListener('click', () => {
     });
 
     gif.on('finished', function(blob) {
-        statusDiv.innerText = "Ãƒâ€šÃ‚Â¡GIF exportado!";
+        exportModal.style.display = 'none';
+        statusDiv.innerText = `¡GIF exportado!`;
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -527,6 +556,7 @@ exportWebmBtn.addEventListener('click', async () => {
     };
     
     mediaRecorder.onstop = () => {
+        exportModal.style.display = 'none';
         const blob = new Blob(chunks, { type: 'video/webm' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -534,7 +564,7 @@ exportWebmBtn.addEventListener('click', async () => {
         a.download = 'jitterfx.webm';
         a.click();
         
-        statusDiv.innerText = 'Ãƒâ€šÃ‚Â¡Video exportado con Matte/Watermark!';
+        statusDiv.innerText = `¡Video exportado!`;
         disableExport(false);
     };
     
@@ -581,6 +611,10 @@ dropZone.addEventListener('drop', (e) => {
 });
 
 function enableControls() {
+    presetPencil.disabled = false;
+    presetVHS.disabled = false;
+    presetWater.disabled = false;
+    presetChaos.disabled = false;
     typeInput.disabled = false;
     amountInput.disabled = false;
     speedInput.disabled = false;
