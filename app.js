@@ -48,7 +48,11 @@ const vsSource = `
 `;
 
 const fsSource = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+    precision highp float;
+#else
     precision mediump float;
+#endif
     uniform float u_time;
     uniform float u_sketchy_speed;
     uniform float u_sketchy_amount;
