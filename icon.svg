@@ -1,5 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <rect width="512" height="512" rx="112" fill="#121212" />
     
     <!-- Glitch Cyan Layer -->
     <path d="M120 180 L246 95 L372 180 L372 340 L246 425 L120 340 Z" fill="none" stroke="#00ffff" stroke-width="24" opacity="0.8" />
