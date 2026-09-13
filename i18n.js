@@ -101,7 +101,10 @@ const i18n = {
         "status_waiting": "Waiting for image...",
         "status_loaded": "Image loaded. Previewing...",
         "info_res": "Res",
-        "info_weight": "Size"
+        "info_weight": "Size",
+        "type_global": "Global Shift",
+        "type_static": "Static / Fuzzy",
+        "type_smooth_chunky": "Smooth Chunky (Value Noise)"
     },
     "es": {
         "title": "TOLGRIM JitterFX",
@@ -205,7 +208,10 @@ const i18n = {
         "status_waiting": "Esperando imagen...",
         "status_loaded": "Imagen cargada. Previsualizando...",
         "info_res": "Res",
-        "info_weight": "Peso"
+        "info_weight": "Peso",
+        "type_global": "Global Shift",
+        "type_static": "Static / Fuzzy",
+        "type_smooth_chunky": "Smooth Chunky (Value Noise)"
     },
     "zh": {
         "title": "TOLGRIM JitterFX",
@@ -309,7 +315,10 @@ const i18n = {
         "status_waiting": "正在等待图像...",
         "status_loaded": "图像已加载。正在预览...",
         "info_res": "分辨率",
-        "info_weight": "大小"
+        "info_weight": "大小",
+        "type_global": "全局位移",
+        "type_static": "静态/模糊",
+        "type_smooth_chunky": "平滑块状 (值噪声)"
     },
     "ja": {
         "title": "TOLGRIM JitterFX",
@@ -413,7 +422,10 @@ const i18n = {
         "status_waiting": "画像を待っています...",
         "status_loaded": "画像が読み込まれました。プレビュー中...",
         "info_res": "解像度",
-        "info_weight": "サイズ"
+        "info_weight": "サイズ",
+        "type_global": "グローバルシフト",
+        "type_static": "静的/ファジー",
+        "type_smooth_chunky": "スムーズチャンキー (バリューノイズ)"
     },
     "ko": {
         "title": "TOLGRIM JitterFX",
@@ -517,7 +529,10 @@ const i18n = {
         "status_waiting": "이미지 대기 중...",
         "status_loaded": "이미지가 로드되었습니다. 미리보기 중...",
         "info_res": "해상도",
-        "info_weight": "크기"
+        "info_weight": "크기",
+        "type_global": "글로벌 시프트",
+        "type_static": "정적/퍼지",
+        "type_smooth_chunky": "스무스 청키 (값 노이즈)"
     },
     "fr": {
         "title": "TOLGRIM JitterFX",
@@ -621,7 +636,10 @@ const i18n = {
         "status_waiting": "En attente d'image...",
         "status_loaded": "Image chargée. Aperçu...",
         "info_res": "Rés",
-        "info_weight": "Taille"
+        "info_weight": "Taille",
+        "type_global": "Décalage Global",
+        "type_static": "Statique/Flou",
+        "type_smooth_chunky": "Blocs Lisses (Bruit de Valeur)"
     },
     "de": {
         "title": "TOLGRIM JitterFX",
@@ -725,7 +743,10 @@ const i18n = {
         "status_waiting": "Warte auf Bild...",
         "status_loaded": "Bild geladen. Vorschau...",
         "info_res": "Aufl",
-        "info_weight": "Größe"
+        "info_weight": "Größe",
+        "type_global": "Globale Verschiebung",
+        "type_static": "Statisch/Fuzzy",
+        "type_smooth_chunky": "Glatte Blöcke (Wertrauschen)"
     },
     "pt": {
         "title": "TOLGRIM JitterFX",
@@ -829,7 +850,10 @@ const i18n = {
         "status_waiting": "Esperando imagem...",
         "status_loaded": "Imagem carregada. Visualizando...",
         "info_res": "Res",
-        "info_weight": "Peso"
+        "info_weight": "Peso",
+        "type_global": "Deslocamento Global",
+        "type_static": "Estático/Difuso",
+        "type_smooth_chunky": "Blocos Suaves (Ruído de Valor)"
     }
 };
 
