@@ -48,7 +48,7 @@
 </div>
             
             <div class="section-card">
-                <div class="section-title">🖼️ 1. Entrada</div>
+                <div class="section-title" data-i18n="s1_title">🖼️ 1. Entrada</div>
                 <div class="control-group">
                     <label data-i18n="s1_image">Imagen (PNG/JPG/WEBP)</label>
                 <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp">
@@ -71,14 +71,14 @@
             </div>
 
             <div class="section-card">
-                <div class="section-title">🌪️ 2. Motor Matemático</div>
+                <div class="section-title" data-i18n="s2_title">🌪️ 2. Motor Matemático</div>
                 <div class="control-group">
                     <label data-i18n="s2_presets">Presets Mágicos</label>
                 <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-                    <button id="presetPencil" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Estilo de dibujo a lápiz tembloroso">🖋️ Lápiz</button>
-                    <button id="presetVHS" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Estilo cámara antigua / estática">📺 VHS</button>
+                    <button id="presetPencil" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" data-i18n="preset_pencil" data-i18n-tip-only="preset_pencil_tip" title="Estilo de dibujo a lápiz tembloroso">🖋️ Lápiz</button>
+                    <button id="presetVHS" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" data-i18n="preset_vhs" data-i18n-tip-only="preset_vhs_tip" title="Estilo cámara antigua / estática">📺 VHS</button>
                     <button id="presetWater" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" data-i18n="preset_water" data-i18n-tip-only="preset_water_tip" title="Ondulaciones de agua suaves">🌊 Olas</button>
-                    <button id="presetChaos" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Vibración extrema en bloques">🌪️ Caos</button>
+                    <button id="presetChaos" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" data-i18n="preset_chaos" data-i18n-tip-only="preset_chaos_tip" title="Vibración extrema en bloques">🌪️ Caos</button>
                 </div>
             </div>
 
@@ -181,12 +181,12 @@
                     </div>
                     
                     <div style="display: flex; align-items: center; flex: 2; min-width: 90px;">
-                        <span style="margin-right: 5px;" title="Grosor Borde">Brd:</span>
+                        <span style="margin-right: 5px;" data-i18n="s4_border_width_abbr" data-i18n-tip-only="s4_border_width_tip" title="Grosor Borde">Brd:</span>
                         <input type="range" id="wmBorderWidth" min="0" max="10" value="4" disabled style="width: 100%;">
                     </div>
                     
                     <div style="display: flex; align-items: center; flex: 2; min-width: 90px;">
-                        <span style="margin-right: 5px;" title="Opacidad">Opc:</span>
+                        <span style="margin-right: 5px;" data-i18n="s4_opacity_abbr" data-i18n-tip-only="s4_opacity_tip" title="Opacidad">Opc:</span>
                         <input type="range" id="wmOpacity" min="0.1" max="1" step="0.1" value="0.8" disabled style="width: 100%;">
                     </div>
                 </div>

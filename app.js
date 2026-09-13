@@ -715,7 +715,7 @@ function handleFile(file) {
         let mbSize = (file.size / (1024 * 1024)).toFixed(2);
         let kbSize = (file.size / 1024).toFixed(1);
         let displaySize = file.size > 1024 * 1024 ? `${mbSize} MB` : `${kbSize} KB`;
-        imageInfo.innerHTML = `<strong>Res:</strong> ${img.width}x${img.height} px &nbsp;|&nbsp; <strong>Peso:</strong> ${displaySize}`;
+        imageInfo.innerHTML = `<strong>${t('info_res')}:</strong> ${img.width}x${img.height} px &nbsp;|&nbsp; <strong>${t('info_weight')}:</strong> ${displaySize}`;
         imageInfo.style.display = 'block';
         
         if (animationId) cancelAnimationFrame(animationId);
