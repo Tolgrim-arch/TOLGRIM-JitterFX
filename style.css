@@ -160,3 +160,14 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
     height: 6px;
     border-radius: 3px;
 }
+#brushCursor {
+    position: fixed;
+    pointer-events: none;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1000;
+    box-sizing: border-box;
+}

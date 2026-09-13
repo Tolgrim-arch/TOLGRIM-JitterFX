@@ -53,7 +53,8 @@ brushEnableBtn.addEventListener('click', () => {
     isBrushEnabled = !isBrushEnabled;
     brushEnableBtn.classList.toggle('active', isBrushEnabled);
     brushControlsDiv.style.display = isBrushEnabled ? 'flex' : 'none';
-    canvas.style.cursor = isBrushEnabled ? 'crosshair' : 'default';
+    canvas.style.cursor = isBrushEnabled ? 'none' : 'default';
+    if (!isBrushEnabled) brushCursor.style.display = 'none';
 });
 
 brushViewBtn.addEventListener('click', () => {
@@ -137,14 +138,40 @@ function paint(e) {
     maskNeedsUpdate = true;
 }
 
+const brushCursor = document.getElementById('brushCursor');
+
 canvas.addEventListener('mousedown', (e) => {
     if (!isBrushEnabled) return;
     isPainting = true;
     paint(e);
 });
 canvas.addEventListener('mousemove', (e) => {
-    if (!isBrushEnabled || !isPainting) return;
-    paint(e);
+    if (isBrushEnabled) {
+        brushCursor.style.display = 'block';
+        brushCursor.style.left = e.clientX + 'px';
+        brushCursor.style.top = e.clientY + 'px';
+        
+        // Compute visual size
+        const rect = canvas.getBoundingClientRect();
+        const imageAspect = canvas.width / canvas.height;
+        const boxAspect = rect.width / rect.height;
+        let renderedWidth;
+        if (imageAspect > boxAspect) {
+            renderedWidth = rect.width;
+        } else {
+            renderedWidth = rect.height * imageAspect;
+        }
+        const scale = renderedWidth / canvas.width;
+        const size = parseInt(brushSizeInput.value) * 2 * scale; // diameter
+        
+        brushCursor.style.width = size + 'px';
+        brushCursor.style.height = size + 'px';
+        
+        if (isPainting) paint(e);
+    }
+});
+canvas.addEventListener('mouseleave', () => {
+    brushCursor.style.display = 'none';
 });
 window.addEventListener('mouseup', () => isPainting = false);
 
