@@ -1,5 +1,5 @@
 <div align="center">
-  [🇬🇧 English](README.md) | **🇪🇸 Español** | [🇨🇳 简体中文](README.zh.md) | [🇯🇵 日本語](README.ja.md) | [🇰🇷 한국어](README.ko.md)
+  <a href="README.md">🇬🇧 English</a> | <b>🇪🇸 Español</b> | <a href="README.zh.md">🇨🇳 简体中文</a> | <a href="README.ja.md">🇯🇵 日本語</a> | <a href="README.ko.md">🇰🇷 한국어</a>
 </div>
 
 <div align="center">
