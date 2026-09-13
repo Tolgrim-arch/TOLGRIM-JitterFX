@@ -159,6 +159,7 @@ const exportModal = document.getElementById('exportModal');
 const exportModalTitle = document.getElementById('exportModalTitle');
 const exportModalProgress = document.getElementById('exportModalProgress');
 const exportModalText = document.getElementById('exportModalText');
+const filenameInput = document.getElementById('filenameInput');
 
 function applyPreset(type, amount, speed, block) {
     typeInput.value = type; updateLabel('typeVal', typeInput.options[typeInput.selectedIndex].text);
@@ -516,7 +517,9 @@ exportBtn.addEventListener('click', () => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'jitterfx.gif';
+        let fn = filenameInput.value.trim() || 'jitterfx_export';
+        if (!fn.toLowerCase().endsWith('.gif')) fn += '.gif';
+        a.download = fn;
         a.click();
         disableExport(false);
     });
@@ -566,7 +569,9 @@ exportWebmBtn.addEventListener('click', async () => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'jitterfx.webm';
+        let fn = filenameInput.value.trim() || 'jitterfx_export';
+        if (!fn.toLowerCase().endsWith('.webm')) fn += '.webm';
+        a.download = fn;
         a.click();
         
         statusDiv.innerText = `¡Video exportado!`;
@@ -639,6 +644,7 @@ function enableControls() {
     wmOpacity.disabled = false;
     pingpongInput.disabled = false;
     resolutionInput.disabled = false;
+    filenameInput.disabled = false;
     exportBtn.disabled = false;
     exportWebmBtn.disabled = false;
     emptyState.style.display = 'none';
@@ -647,6 +653,13 @@ function enableControls() {
 }
 
 function handleFile(file) {
+    if (file.name) {
+        let name = file.name.replace(/\.[^/.]+$/, "");
+        filenameInput.value = name + "_jitterfx";
+    } else {
+        filenameInput.value = "jitterfx_export";
+    }
+
     const img = new Image();
     img.onload = () => {
         currentImage = img;
