@@ -192,19 +192,11 @@ bgPreset.addEventListener('change', () => {
 
 function getTargetDimensions() {
     if (!currentImage) return { w: 0, h: 0 };
-    let w = currentImage.width;
-    let h = currentImage.height;
-    let max = resolutionInput.value;
-    if (max !== 'original') {
-        let maxDim = parseInt(max);
-        let largest = Math.max(w, h);
-        if (largest > maxDim) {
-            let ratio = maxDim / largest;
-            w = Math.round(w * ratio);
-            h = Math.round(h * ratio);
-        }
-    }
-    return { w, h };
+    let scale = parseFloat(resolutionInput.value);
+    return { 
+        w: Math.round(currentImage.width * scale), 
+        h: Math.round(currentImage.height * scale) 
+    };
 }
 
 function updateEstimate() {
@@ -212,6 +204,9 @@ function updateEstimate() {
     const { w, h } = getTargetDimensions();
     const framesCount = parseInt(framesInput.value);
     const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
+    
+    const resOutputLabel = document.getElementById('resOutputLabel');
+    if (resOutputLabel) resOutputLabel.innerText = `${w}x${h}px`;
     
     const pixels = w * h * totalFrames;
     const gifBytes = pixels * 0.1;
@@ -222,8 +217,7 @@ function updateEstimate() {
         return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
     };
     
-    exportEstimate.innerHTML = `Resolución Final: <strong>${w}x${h} px</strong><br>
-    Estimación: <strong>~${formatSize(gifBytes)}</strong> (GIF) / <strong>~${formatSize(webmBytes)}</strong> (Video)`;
+    exportEstimate.innerHTML = `Estimación: ~${formatSize(gifBytes)} (GIF) / ~${formatSize(webmBytes)} (Video)`;
 }
 
 framesInput.addEventListener('input', updateEstimate);
