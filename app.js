@@ -140,12 +140,13 @@ function paint(e) {
 
 const brushCursor = document.getElementById('brushCursor');
 
-canvas.addEventListener('mousedown', (e) => {
+canvas.addEventListener('pointerdown', (e) => {
     if (!isBrushEnabled) return;
     isPainting = true;
     paint(e);
+    canvas.setPointerCapture(e.pointerId);
 });
-canvas.addEventListener('mousemove', (e) => {
+canvas.addEventListener('pointermove', (e) => {
     if (isBrushEnabled) {
         brushCursor.style.display = 'block';
         brushCursor.style.left = e.clientX + 'px';
@@ -170,10 +171,10 @@ canvas.addEventListener('mousemove', (e) => {
         if (isPainting) paint(e);
     }
 });
-canvas.addEventListener('mouseleave', () => {
+canvas.addEventListener('pointerleave', () => {
     brushCursor.style.display = 'none';
 });
-window.addEventListener('mouseup', () => isPainting = false);
+window.addEventListener('pointerup', () => isPainting = false);
 
 
 
