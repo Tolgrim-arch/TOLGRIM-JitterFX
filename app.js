@@ -710,7 +710,7 @@ function handleFile(file) {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
         
         enableControls();
-        statusDiv.innerText = 'Imagen cargada. Previsualizando...';
+        statusDiv.innerText = t('status_loaded');
         
         let mbSize = (file.size / (1024 * 1024)).toFixed(2);
         let kbSize = (file.size / 1024).toFixed(1);

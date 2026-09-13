@@ -22,20 +22,21 @@
         <aside class="sidebar" id="sidebarElement">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <h2>JitterFX</h2>
+
+                <select id="langSelect" style="padding: 2px 5px; font-size: 0.8em; border-radius: 4px; background: rgba(0,0,0,0.5); color: white; border: 1px solid var(--accent-color);">
+                    <option value="en">EN</option>
+                    <option value="es">ES</option>
+                    <option value="zh">ZH</option>
+                    <option value="ja">JA</option>
+                    <option value="ko">KO</option>
+                    <option value="fr">FR</option>
+                    <option value="de">DE</option>
+                    <option value="pt">PT</option>
+                </select>
+
                 
-        <div style="position: absolute; top: 15px; left: 15px; z-index: 10;">
-            <select id="langSelect" style="padding: 2px 5px; font-size: 0.8em; border-radius: 4px; background: rgba(0,0,0,0.5); color: white; border: 1px solid var(--accent-color);">
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="zh">中文</option>
-                <option value="ja">日本語</option>
-                <option value="ko">한국어</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-                <option value="pt">Português</option>
-            </select>
-        </div>
-<label class="theme-switch" title="Tema Panel">
+        
+<label class="theme-switch" data-i18n-tip-only="theme_panel_tip" title="Tema Panel">
                     <input type="checkbox" id="themeToggleSidebar">
                     <span class="slider round">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -91,7 +92,7 @@
             </div>
 
             <div class="control-group">
-                <label>Intensidad <span title="Fuerza del temblor. Valores altos rompen la imagen." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="amountVal">0.005</span></label>
+                <label data-i18n="s2_intensity" data-i18n-tip="s2_intensity_tip">Intensidad <span title="Fuerza del temblor. Valores altos rompen la imagen." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="amountVal">0.005</span></label>
                 <input type="range" id="amountInput" min="0" max="0.05" step="0.001" value="0.005" disabled>
             </div>
 
@@ -101,7 +102,7 @@
             </div>
 
             <div class="control-group">
-                <label>Frames Únicos <span title="Cuántos fotogramas componen el bucle antes de repetirse." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="framesVal">3</span></label>
+                <label data-i18n="s2_frames" data-i18n-tip="s2_frames_tip">Frames Únicos <span title="Cuántos fotogramas componen el bucle antes de repetirse." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="framesVal">10</span></label>
                 <input type="range" id="framesInput" min="2" max="24" step="1" value="3" disabled>
             </div>
 
@@ -222,23 +223,12 @@
             
             </div>
             
-            <div id="status">Esperando imagen...</div>
+            <div id="status" data-i18n="status_waiting">Esperando imagen...</div>
         </aside>
         
         <main class="preview" id="dropZone">
             
-        <div style="position: absolute; top: 15px; left: 15px; z-index: 10;">
-            <select id="langSelect" style="padding: 2px 5px; font-size: 0.8em; border-radius: 4px; background: rgba(0,0,0,0.5); color: white; border: 1px solid var(--accent-color);">
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="zh">中文</option>
-                <option value="ja">日本語</option>
-                <option value="ko">한국어</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-                <option value="pt">Português</option>
-            </select>
-        </div>
+        
 <label class="theme-switch" data-i18n-tip-only="theme_toggle" title="Tema Fondo" style="position: absolute; top: 15px; right: 15px; z-index: 10;">
                 <input type="checkbox" id="themeTogglePreview">
                 <span class="slider round">
