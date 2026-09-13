@@ -7,7 +7,7 @@
   <h1>JitterFX</h1>
   <p><strong>디지털 아티스트를 위한 WebGL 애니메이션 엔진 (지터 / 손그림 효과)</strong></p>
   <a href="https://tolgrim-arch.github.io/TOLGRIM-JitterFX/">
-    <img src="https://img.shields.io/badge/브라우저에서_열기-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open App" />
+    <img src="https://img.shields.io/badge/브라우저에서_열기-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open App" height="56" />
   </a>
 </div>
 

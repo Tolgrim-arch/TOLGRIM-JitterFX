@@ -7,7 +7,7 @@
   <h1>JitterFX</h1>
   <p><strong>Motor WebGL de Animación (Jitter / Hand-drawn) para Artistas Digitales</strong></p>
   <a href="https://tolgrim-arch.github.io/TOLGRIM-JitterFX/">
-    <img src="https://img.shields.io/badge/Abrir_App_en_el_Navegador-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Abrir App" />
+    <img src="https://img.shields.io/badge/Abrir_App_en_el_Navegador-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Abrir App" height="56" />
   </a>
 </div>
 

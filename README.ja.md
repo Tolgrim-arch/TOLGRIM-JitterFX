@@ -7,7 +7,7 @@
   <h1>JitterFX</h1>
   <p><strong>デジタルアーティストのための WebGL アニメーションエンジン (ジッター / 手描き風)</strong></p>
   <a href="https://tolgrim-arch.github.io/TOLGRIM-JitterFX/">
-    <img src="https://img.shields.io/badge/ブラウザで開く-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open App" />
+    <img src="https://img.shields.io/badge/ブラウザで開く-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open App" height="56" />
   </a>
 </div>
 

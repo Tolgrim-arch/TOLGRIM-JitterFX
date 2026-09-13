@@ -7,7 +7,7 @@
   <h1>JitterFX</h1>
   <p><strong>面向数字艺术家的 WebGL 动画引擎 (Jitter / 手绘效果)</strong></p>
   <a href="https://tolgrim-arch.github.io/TOLGRIM-JitterFX/">
-    <img src="https://img.shields.io/badge/在浏览器中打开-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open App" />
+    <img src="https://img.shields.io/badge/在浏览器中打开-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open App" height="56" />
   </a>
 </div>
 
