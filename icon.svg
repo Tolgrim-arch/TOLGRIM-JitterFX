@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="112" fill="#121212" />
+    
+    <!-- Glitch Cyan Layer -->
+    <path d="M120 180 L246 95 L372 180 L372 340 L246 425 L120 340 Z" fill="none" stroke="#00ffff" stroke-width="24" opacity="0.8" />
+    <circle cx="236" cy="260" r="45" fill="#00ffff" opacity="0.8" />
+    
+    <!-- Glitch Magenta Layer -->
+    <path d="M150 200 L276 115 L402 200 L402 360 L276 445 L150 360 Z" fill="none" stroke="#ff00ff" stroke-width="24" opacity="0.8" />
+    <circle cx="276" cy="290" r="45" fill="#ff00ff" opacity="0.8" />
+    
+    <!-- Main Accent Layer (#bb86fc) -->
+    <path d="M135 190 L261 105 L387 190 L387 350 L261 435 L135 350 Z" fill="none" stroke="#bb86fc" stroke-width="32" />
+    <circle cx="256" cy="275" r="50" fill="#bb86fc" />
+    
+    <!-- White Inner Details -->
+    <circle cx="256" cy="275" r="20" fill="#ffffff" />
+    
+    <!-- Glitch horizontal bars -->
+    <rect x="80" y="200" width="350" height="12" fill="#00ffff" opacity="0.5" />
+    <rect x="90" y="320" width="200" height="12" fill="#ff00ff" opacity="0.5" />
+</svg>

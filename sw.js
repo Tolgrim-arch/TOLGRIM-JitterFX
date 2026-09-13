@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jitterfx-v27';
+const CACHE_NAME = 'jitterfx-v28';
 const ASSETS = [
     './',
     './index.html',
@@ -9,6 +9,7 @@ const ASSETS = [
     './gif.worker.js',
     './manifest.json',
     './icon-192.png',
+  './icon.svg',
     './icon-512.png'
 ];
 
