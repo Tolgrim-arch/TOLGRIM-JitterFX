@@ -11,18 +11,31 @@
 </head>
 <body>
     <div id="exportModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: white; font-family: monospace;">
-        <h2 id="exportModalTitle" style="color: var(--accent-color); margin-bottom: 20px;">Codificando...</h2>
+        <h2 id="exportModalTitle" data-i18n="modal_title" style="color: var(--accent-color); margin-bottom: 20px;">Codificando...</h2>
         <div style="width: 80%; max-width: 400px; height: 10px; background: #333; border-radius: 5px; overflow: hidden;">
             <div id="exportModalProgress" style="width: 0%; height: 100%; background: var(--accent-color); transition: width 0.2s;"></div>
         </div>
         <p id="exportModalText" style="margin-top: 15px;">0%</p>
-        <p style="font-size: 0.8em; opacity: 0.6; margin-top: 30px;">Por favor, no cierres esta pestaña ni apagues la pantalla.</p>
+        <p data-i18n="modal_warn" style="font-size: 0.8em; opacity: 0.6; margin-top: 30px;">Por favor, no cierres esta pestaña ni apagues la pantalla.</p>
     </div>
     <div class="container">
         <aside class="sidebar" id="sidebarElement">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <h2>JitterFX</h2>
-                <label class="theme-switch" title="Tema Panel">
+                
+        <div style="position: absolute; top: 15px; left: 15px; z-index: 10;">
+            <select id="langSelect" style="padding: 2px 5px; font-size: 0.8em; border-radius: 4px; background: rgba(0,0,0,0.5); color: white; border: 1px solid var(--accent-color);">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
+<label class="theme-switch" title="Tema Panel">
                     <input type="checkbox" id="themeToggleSidebar">
                     <span class="slider round">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -34,20 +47,20 @@
             <div class="section-card">
                 <div class="section-title">🖼️ 1. Entrada</div>
                 <div class="control-group">
-                    <label>Imagen (PNG/JPG/WEBP)</label>
+                    <label data-i18n="s1_image">Imagen (PNG/JPG/WEBP)</label>
                 <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp">
                 <div id="imageInfo" style="font-size: 0.85em; opacity: 0.8; margin-top: 2px; display: none; line-height: 1.4;"></div>
             </div>
             <div class="control-group">
-                    <label>Color de Fondo (Matte) <span title="El color visible debajo de imágenes con partes transparentes (PNG/WEBP)." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+                    <label data-i18n="s1_matte" data-i18n-tip="s1_matte_tip">Color de Fondo (Matte) <span title="The visible color underneath images with transparent parts (PNG/WEBP)." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <div style="display: flex; gap: 5px;">
                     <input type="color" id="bgColorPicker" value="#000000" style="width: 40px; padding: 0; cursor: pointer;" disabled>
                     <select id="bgPreset" style="flex: 1;" disabled>
-                        <option value="transparent">Transparente</option>
-                        <option value="#000000">Twitter Oscuro</option>
-                        <option value="#15202b">Twitter Dim</option>
-                        <option value="#ffffff">Twitter Claro</option>
-                        <option value="custom">Personalizado...</option>
+                        <option value="transparent" data-i18n="bg_trans">Transparente</option>
+                        <option value="#000000" data-i18n="bg_dark">Twitter Oscuro</option>
+                        <option value="#15202b" data-i18n="bg_dim">Twitter Dim</option>
+                        <option value="#ffffff" data-i18n="bg_light">Twitter Claro</option>
+                        <option value="custom" data-i18n="bg_custom">Personalizado...</option>
                     </select>
                 </div>
             </div>
@@ -57,17 +70,17 @@
             <div class="section-card">
                 <div class="section-title">🌪️ 2. Motor Matemático</div>
                 <div class="control-group">
-                    <label>Presets Mágicos</label>
+                    <label data-i18n="s2_presets">Presets Mágicos</label>
                 <div style="display: flex; gap: 5px; flex-wrap: wrap;">
                     <button id="presetPencil" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Estilo de dibujo a lápiz tembloroso">🖋️ Lápiz</button>
                     <button id="presetVHS" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Estilo cámara antigua / estática">📺 VHS</button>
-                    <button id="presetWater" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Ondulaciones de agua suaves">🌊 Olas</button>
+                    <button id="presetWater" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" data-i18n="preset_water" data-i18n-tip-only="preset_water_tip" title="Ondulaciones de agua suaves">🌊 Olas</button>
                     <button id="presetChaos" class="toggle-btn" disabled style="flex: 1; padding: 4px; font-size: 0.85em;" title="Vibración extrema en bloques">🌪️ Caos</button>
                 </div>
             </div>
 
             <div class="control-group">
-                <label>Tipo de Jitter <span title="El estilo matemático de vibración. El Ruido Perlin (Value Noise) es más orgánico, los demás son más robóticos o cuadriculados." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+                <label data-i18n="s2_type">Tipo de Jitter <span title="El estilo matemático de vibración. El Ruido Perlin (Value Noise) es más orgánico, los demás son más robóticos o cuadriculados." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <select id="typeInput" disabled>
                     <option value="0">Global Shift</option>
                     <option value="1">Chunky Jitter (Bloques)</option>
@@ -93,13 +106,13 @@
             </div>
 
             <div class="control-group">
-                <label>Tamaño Bloque <span title="Tamaño del bloque de ruido matemático." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="blockVal">20</span></label>
+                <label data-i18n="s2_block" data-i18n-tip="s2_block_tip">Tamaño Bloque <span title="Size of the mathematical noise block." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span>: <span id="blockVal">20</span></label>
                 <input type="range" id="blockInput" min="1" max="100" step="1" value="20" disabled>
             </div>
 
             <div class="control-group" style="flex-direction: row; align-items: center; margin-bottom: 10px;">
                 <input type="checkbox" id="pingpongInput" style="width: auto; cursor: pointer;" disabled>
-                <label for="pingpongInput" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong <span title="La animación rebota hacia adelante y hacia atrás. Útil para hacer bucles perfectos (seamless) que no saltan de golpe." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+                <label for="pingpongInput" data-i18n="s2_pingpong" data-i18n-tip="s2_pingpong_tip" style="margin-left: 5px; cursor: pointer;">Bucle Ping-Pong <span title="The animation bounces forward and backward. Useful for seamless loops without sudden jumps." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
             </div>
             
             </div>
@@ -108,18 +121,18 @@
 
             
             <div class="section-card">
-                <div class="section-title">🖌️ 3. Aislamiento Táctico</div>
+                <div class="section-title" data-i18n="s3_title">🖌️ 3. Aislamiento Táctico</div>
                 <div class="control-group">
-                <label>Máscara de Aislamiento (Pincel) <span title="Dibuja sobre el lienzo para elegir con precisión qué zonas deben temblar y cuáles quedarse congeladas." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+                <label data-i18n="s3_mask" data-i18n-tip="s3_mask_tip">Máscara de Aislamiento (Pincel) <span title="Draw on the canvas to precisely choose which areas should jitter and which should remain frozen." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <div style="display: flex; gap: 5px; margin-bottom: 5px;">
-                    <button id="brushEnableBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled>Activar Pincel</button>
-                    <button id="brushViewBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled>Ver Máscara</button>
+                    <button id="brushEnableBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled data-i18n="btn_brush_enable">Activar Pincel</button>
+                    <button id="brushViewBtn" class="toggle-btn" style="flex: 1; padding: 6px;" disabled data-i18n="btn_brush_view">Ver Máscara</button>
                 </div>
                 
                 <div id="brushControlsDiv" style="display: none; flex-direction: column; gap: 5px;">
                     <div style="display: flex; gap: 5px;">
-                        <button id="brushModeAddBtn" class="toggle-btn active" style="flex: 1; padding: 4px;">+ Jitter</button>
-                        <button id="brushModeSubBtn" class="toggle-btn" style="flex: 1; padding: 4px;">- Estático</button>
+                        <button id="brushModeAddBtn" class="toggle-btn active" style="flex: 1; padding: 4px;" data-i18n="btn_add">+ Jitter</button>
+                        <button id="brushModeSubBtn" class="toggle-btn" style="flex: 1; padding: 4px;" data-i18n="btn_sub">- Estático</button>
                     </div>
                     
                     <div style="display: flex; align-items: center; gap: 5px; font-size: 0.8em;">
@@ -133,26 +146,26 @@
                     </div>
                     
                     <div style="display: flex; gap: 5px; margin-top: 2px;">
-                        <button id="maskClearBtn" style="flex: 1; background: #555; padding: 4px; font-size: 0.8em;">Borrar Todo</button>
-                        <button id="maskFillBtn" style="flex: 1; background: #555; padding: 4px; font-size: 0.8em;">Llenar Todo</button>
+                        <button id="maskClearBtn" style="flex: 1; background: #555; padding: 4px; font-size: 0.8em;" data-i18n="btn_clear">Borrar Todo</button>
+                        <button id="maskFillBtn" style="flex: 1; background: #555; padding: 4px; font-size: 0.8em;" data-i18n="btn_fill">Llenar Todo</button>
                     </div>
                 </div>
             </div>
             </div>
 
             <div class="section-card">
-                <div class="section-title">🛡️ 4. Firma y Protección</div>
+                <div class="section-title" data-i18n="s4_title">🛡️ 4. Firma y Protección</div>
                 <div class="control-group">
-                <label>Marca de Agua Táctica <span title="Protege tu obra inyectando texto incrustado. Usa los controles para elegir la esquina, opacidad y colores tipográficos." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
-                <input type="text" id="watermarkInput" placeholder="@usuario o Firma" disabled style="margin-bottom: 5px;">
+                <label data-i18n="s4_watermark" data-i18n-tip="s4_watermark_tip">Marca de Agua Táctica <span title="Protect your work by injecting embedded text." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+                <input type="text" id="watermarkInput" data-i18n="wm_placeholder" placeholder="@usuario o Firma" disabled style="margin-bottom: 5px;">
                 
                 <div style="display: flex; gap: 5px; margin-bottom: 5px;">
                     <select id="wmPos" style="flex: 1; padding: 4px;" disabled>
-                        <option value="br">Abajo Derecha</option>
-                        <option value="bl">Abajo Izquierda</option>
-                        <option value="tr">Arriba Derecha</option>
-                        <option value="tl">Arriba Izquierda</option>
-                        <option value="c">Centro</option>
+                        <option value="br" data-i18n="pos_br">Abajo Derecha</option>
+                        <option value="bl" data-i18n="pos_bl">Abajo Izquierda</option>
+                        <option value="tr" data-i18n="pos_tr">Arriba Derecha</option>
+                        <option value="tl" data-i18n="pos_tl">Arriba Izquierda</option>
+                        <option value="c" data-i18n="pos_c">Centro</option>
                     </select>
                     <input type="color" id="wmColor" value="#ffffff" title="Color de Texto" disabled style="width: 35px; padding: 0; cursor: pointer;">
                     <input type="color" id="wmBorderColor" value="#000000" title="Color de Borde" disabled style="width: 35px; padding: 0; cursor: pointer;">
@@ -177,24 +190,24 @@
             </div>
             </div>
             <div class="section-card" style="margin-bottom: 0;">
-                <div class="section-title" style="color: var(--accent-color);">💾 5. Exportación</div>
+                <div class="section-title" style="color: var(--accent-color);" data-i18n="s5_title">💾 5. Exportación</div>
                 
                 <div class="control-group" style="margin-bottom: 10px;">
-                    <label>Nombre del Archivo <span title="El nombre con el que se guardará tu GIF o Video final en tu computadora." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+                    <label data-i18n="s5_filename" data-i18n-tip="s5_filename_tip">Nombre del Archivo <span title="The name under which your final GIF or Video will be saved on your computer." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                     <input type="text" id="filenameInput" placeholder="jitterfx_export" disabled>
                 </div>
                 
                 <div class="control-group">
-                    <label>Resolución de Salida <span title="Escala la imagen antes de codificar el video. Evita colapsos de memoria RAM en lienzos gigantes (4K+) y permite sortear los límites de tamaño de Twitter." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
+                    <label data-i18n="s5_resolution" data-i18n-tip="s5_resolution_tip">Resolución de Salida <span title="Scales the image before encoding the video. Prevents RAM crashes on giant canvases (4K+) and bypasses Twitter limits." style="cursor:help;opacity:0.6"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: text-bottom; margin-left: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></span></label>
                 <div style="display: flex; gap: 5px; align-items: center;">
                     <select id="resolutionInput" style="flex: 1;" disabled>
-                        <option value="3">x3 (Gigante)</option>
-                        <option value="2">x2 (Doble)</option>
-                        <option value="1.5">x1.5 (Aumentado)</option>
-                        <option value="1" selected>x1 (Original)</option>
-                        <option value="0.75">x0.75 (Reducido)</option>
-                        <option value="0.5">x0.5 (Mitad)</option>
-                        <option value="0.25">x0.25 (Pequeño)</option>
+                        <option value="3" data-i18n="res_3">x3 (Gigante)</option>
+                        <option value="2" data-i18n="res_2">x2 (Doble)</option>
+                        <option value="1.5" data-i18n="res_15">x1.5 (Aumentado)</option>
+                        <option value="1" selected data-i18n="res_1">x1 (Original)</option>
+                        <option value="0.75" data-i18n="res_075">x0.75 (Reducido)</option>
+                        <option value="0.5" data-i18n="res_05">x0.5 (Mitad)</option>
+                        <option value="0.25" data-i18n="res_025">x0.25 (Pequeño)</option>
                     </select>
                     <span id="resOutputLabel" style="font-size: 0.85em; opacity: 0.9; min-width: 85px; text-align: right; color: var(--accent-color);">-- x --</span>
                 </div>
@@ -203,8 +216,8 @@
             <div id="exportEstimate" style="font-size: 0.85em; opacity: 0.8; text-align: center; margin-bottom: 8px; color: var(--accent-color);"></div>
 
             <div class="control-group" style="flex-direction: row; gap: 10px;">
-                <button id="exportBtn" disabled style="flex: 1;">Exportar GIF</button>
-                <button id="exportWebmBtn" disabled style="flex: 1; background: #3cb4b3;">Exportar Video</button>
+                <button id="exportBtn" disabled style="flex: 1;" data-i18n="btn_gif">Exportar GIF</button>
+                <button id="exportWebmBtn" disabled style="flex: 1; background: #3cb4b3;" data-i18n="btn_webm">Exportar Video</button>
             </div>
             
             </div>
@@ -213,7 +226,20 @@
         </aside>
         
         <main class="preview" id="dropZone">
-            <label class="theme-switch" title="Tema Fondo" style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+            
+        <div style="position: absolute; top: 15px; left: 15px; z-index: 10;">
+            <select id="langSelect" style="padding: 2px 5px; font-size: 0.8em; border-radius: 4px; background: rgba(0,0,0,0.5); color: white; border: 1px solid var(--accent-color);">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
+<label class="theme-switch" data-i18n-tip-only="theme_toggle" title="Tema Fondo" style="position: absolute; top: 15px; right: 15px; z-index: 10;">
                 <input type="checkbox" id="themeTogglePreview">
                 <span class="slider round">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -227,8 +253,8 @@
                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                     <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
-                <h3 style="margin: 10px 0 5px 0;">Sube una imagen</h3>
-                <p style="margin: 0; font-size: 0.9em;">Arrastra tu archivo aquí</p>
+                <h3 data-i18n="upload_title" style="margin: 10px 0 5px 0;">Sube una imagen</h3>
+                <p data-i18n="upload_desc" style="margin: 0; font-size: 0.9em;">Arrastra tu archivo aquí</p>
             </div>
             <canvas id="canvas"></canvas>
         </main>
@@ -236,6 +262,7 @@
     
     <div id="brushCursor"></div>
     <script src="gif.js"></script>
+    <script src="i18n.js"></script>
     <script src="app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {

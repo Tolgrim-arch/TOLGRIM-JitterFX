@@ -249,7 +249,7 @@ function updateEstimate() {
         return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
     };
     
-    exportEstimate.innerHTML = `Estimación: ~${formatSize(gifBytes)} (GIF) / ~${formatSize(webmBytes)} (Video)`;
+    exportEstimate.innerHTML = t('estimate', {gif: formatSize(gifBytes), webm: formatSize(webmBytes)});
 }
 
 framesInput.addEventListener('input', updateEstimate);
@@ -512,11 +512,11 @@ exportBtn.addEventListener('click', () => {
     const totalFrames = pingpongInput.checked ? (framesCount * 2 - 2) : framesCount;
     
     const { w, h } = getTargetDimensions();
-    statusDiv.innerText = `Generando GIF (${w}x${h} - ${totalFrames} frames)...`;
+    statusDiv.innerText = t('dyn_gen_gif', {w, h, f: totalFrames});
     
     exportModal.style.display = 'flex';
-    exportModalTitle.innerText = 'Renderizando GIF';
-    exportModalText.innerText = `Resolución: ${w}x${h} | Frames: ${totalFrames}`;
+    exportModalTitle.innerText = t('dyn_rendering_gif');
+    exportModalText.innerText = t('dyn_res', {w, h, f: totalFrames});
     exportModalProgress.style.width = '0%';
     
     const gif = new GIF({
@@ -538,13 +538,13 @@ exportBtn.addEventListener('click', () => {
     }
 
     gif.on('progress', function(p) {
-        statusDiv.innerText = `Codificando GIF... ${Math.round(p * 100)}%`;
+        statusDiv.innerText = t('dyn_enc_gif', {p: Math.round(p * 100)});
         exportModalProgress.style.width = `${Math.round(p * 100)}%`;
     });
 
     gif.on('finished', function(blob) {
         exportModal.style.display = 'none';
-        statusDiv.innerText = `¡GIF exportado!`;
+        statusDiv.innerText = t('dyn_gif_done');
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -568,11 +568,11 @@ exportWebmBtn.addEventListener('click', async () => {
     const delayMs = 1000 / speed;
     
     const { w, h } = getTargetDimensions();
-    statusDiv.innerText = `Grabando Video (${w}x${h} - ${totalFrames} frames)...`;
+    statusDiv.innerText = t('dyn_rec_webm', {w, h, f: totalFrames});
     
     exportModal.style.display = 'flex';
-    exportModalTitle.innerText = 'Renderizando WebM';
-    exportModalText.innerText = `Grabando canvas en tiempo real...`;
+    exportModalTitle.innerText = t('dyn_rendering_webm');
+    exportModalText.innerText = t('dyn_webm_rec');
     exportModalProgress.style.width = '0%';
     
     const exportCanvas = document.createElement('canvas');
@@ -605,7 +605,7 @@ exportWebmBtn.addEventListener('click', async () => {
         a.download = fn;
         a.click();
         
-        statusDiv.innerText = `¡Video exportado!`;
+        statusDiv.innerText = t('dyn_webm_done');
         disableExport(false);
     };
     
