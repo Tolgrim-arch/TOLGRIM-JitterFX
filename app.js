@@ -587,7 +587,15 @@ exportWebmBtn.addEventListener('click', async () => {
         options = { mimeType: 'video/webm' };
     }
     
-    const mediaRecorder = new MediaRecorder(stream, options);
+    let mediaRecorder;
+    try {
+        mediaRecorder = new MediaRecorder(stream, options);
+    } catch (e) {
+        exportModal.style.display = 'none';
+        disableExport(false);
+        alert(t('webm_not_supported') || "Error: Your browser/device (iOS/Safari) does not support WebM recording. Please export as GIF.");
+        return;
+    }
     const chunks = [];
     
     mediaRecorder.ondataavailable = (e) => {

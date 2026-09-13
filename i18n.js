@@ -104,7 +104,9 @@ const i18n = {
         "info_weight": "Size",
         "type_global": "Global Shift",
         "type_static": "Static / Fuzzy",
-        "type_smooth_chunky": "Smooth Chunky (Value Noise)"
+        "type_smooth_chunky": "Smooth Chunky (Value Noise)",
+        "estimate": "Estimate: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "Error: Your browser (iOS/Safari) does not support WebM. Please use GIF."
     },
     "es": {
         "title": "TOLGRIM JitterFX",
@@ -211,7 +213,9 @@ const i18n = {
         "info_weight": "Peso",
         "type_global": "Global Shift",
         "type_static": "Static / Fuzzy",
-        "type_smooth_chunky": "Smooth Chunky (Value Noise)"
+        "type_smooth_chunky": "Smooth Chunky (Value Noise)",
+        "estimate": "Estimado: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "Error: Tu navegador (iOS/Safari) no soporta WebM. Por favor usa GIF."
     },
     "zh": {
         "title": "TOLGRIM JitterFX",
@@ -318,7 +322,9 @@ const i18n = {
         "info_weight": "大小",
         "type_global": "全局位移",
         "type_static": "静态/模糊",
-        "type_smooth_chunky": "平滑块状 (值噪声)"
+        "type_smooth_chunky": "平滑块状 (值噪声)",
+        "estimate": "预估: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "错误: 您的浏览器不支持 WebM (iOS/Safari)。请使用 GIF。"
     },
     "ja": {
         "title": "TOLGRIM JitterFX",
@@ -425,7 +431,9 @@ const i18n = {
         "info_weight": "サイズ",
         "type_global": "グローバルシフト",
         "type_static": "静的/ファジー",
-        "type_smooth_chunky": "スムーズチャンキー (バリューノイズ)"
+        "type_smooth_chunky": "スムーズチャンキー (バリューノイズ)",
+        "estimate": "推定: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "エラー: お使いのブラウザはWebMをサポートしていません。GIFを使用してください。"
     },
     "ko": {
         "title": "TOLGRIM JitterFX",
@@ -532,7 +540,9 @@ const i18n = {
         "info_weight": "크기",
         "type_global": "글로벌 시프트",
         "type_static": "정적/퍼지",
-        "type_smooth_chunky": "스무스 청키 (값 노이즈)"
+        "type_smooth_chunky": "스무스 청키 (값 노이즈)",
+        "estimate": "예상: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "오류: 브라우저가 WebM을 지원하지 않습니다. GIF를 사용하십시오."
     },
     "fr": {
         "title": "TOLGRIM JitterFX",
@@ -639,7 +649,9 @@ const i18n = {
         "info_weight": "Taille",
         "type_global": "Décalage Global",
         "type_static": "Statique/Flou",
-        "type_smooth_chunky": "Blocs Lisses (Bruit de Valeur)"
+        "type_smooth_chunky": "Blocs Lisses (Bruit de Valeur)",
+        "estimate": "Estimé: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "Erreur : Votre navigateur ne prend pas en charge WebM. Utilisez GIF."
     },
     "de": {
         "title": "TOLGRIM JitterFX",
@@ -746,7 +758,9 @@ const i18n = {
         "info_weight": "Größe",
         "type_global": "Globale Verschiebung",
         "type_static": "Statisch/Fuzzy",
-        "type_smooth_chunky": "Glatte Blöcke (Wertrauschen)"
+        "type_smooth_chunky": "Glatte Blöcke (Wertrauschen)",
+        "estimate": "Geschätzt: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "Fehler: Ihr Browser unterstützt WebM nicht. Bitte verwenden Sie GIF."
     },
     "pt": {
         "title": "TOLGRIM JitterFX",
@@ -853,7 +867,9 @@ const i18n = {
         "info_weight": "Peso",
         "type_global": "Deslocamento Global",
         "type_static": "Estático/Difuso",
-        "type_smooth_chunky": "Blocos Suaves (Ruído de Valor)"
+        "type_smooth_chunky": "Blocos Suaves (Ruído de Valor)",
+        "estimate": "Estimado: GIF ~{gif} | WebM ~{webm}",
+        "webm_not_supported": "Erro: Seu navegador não suporta WebM. Por favor, use GIF."
     }
 };
 
