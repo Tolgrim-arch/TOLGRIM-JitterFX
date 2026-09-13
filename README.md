@@ -1,42 +1,46 @@
-﻿<div align="center">
-  <img src="icon-192.png" alt="JitterFX Logo" width="120" />
+<div align="center">
+  **🇬🇧 English** | [🇪🇸 Español](README.es.md) | [🇨🇳 简体中文](README.zh.md) | [🇯🇵 日本語](README.ja.md) | [🇰🇷 한국어](README.ko.md)
+</div>
+
+<div align="center">
+  <img src="icon.svg" alt="JitterFX Logo" width="120" />
   <h1>JitterFX</h1>
-  <p><strong>Motor WebGL de Animación (Jitter / Hand-drawn) para Artistas Digitales</strong></p>
+  <p><strong>WebGL Animation Engine (Jitter / Hand-drawn) for Digital Artists</strong></p>
   <a href="https://tolgrim-arch.github.io/TOLGRIM-JitterFX/">
-    <img src="https://img.shields.io/badge/Abrir_App_en_el_Navegador-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Abrir App" />
+    <img src="https://img.shields.io/badge/Open_Web_App-bb86fc?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open App" />
   </a>
 </div>
 
 <br>
 
-JitterFX es una aplicación web de procesamiento de imágenes del lado del cliente (PWA). Permite a ilustradores y fotógrafos cargar imágenes estáticas y generar bucles animados con efecto de "temblor" o trazado a mano, ideales para proteger obras en redes sociales como Twitter (X).
+JitterFX is a client-side web application (PWA) for image processing. It allows illustrators and photographers to upload static images and generate animated loops with a "jitter" or hand-drawn effect, ideal for protecting artworks on social media like Twitter (X).
 
-## 🚀 Acceso Inmediato
+## 🚀 Instant Access
 
-**No necesitas descargar, clonar ni compilar este repositorio.**  
-Para usar la herramienta, simplemente haz clic en el siguiente enlace desde tu PC o teléfono móvil:
+**No need to download, clone, or compile this repository.**  
+To use the tool, simply click the following link from your PC or mobile phone:
 
-👉 **[ABRIR JITTERFX AHORA](https://tolgrim-arch.github.io/TOLGRIM-JitterFX/)**
+🌐 **[OPEN JITTERFX NOW](https://tolgrim-arch.github.io/TOLGRIM-JitterFX/)**
 
-*(Opcional: Si abres el enlace en tu móvil, el navegador te sugerirá añadirla a la pantalla de inicio. Si lo haces, funcionará como una app nativa sin conexión a internet).*
+*(Optional: If you open the link on your mobile, the browser will suggest adding it to the home screen. If you do, it will work as a native app without an internet connection).*
 
 ---
 
-## 🎨 Características Principales
+## ✨ Main Features
 
-Esta herramienta fue diseñada para eludir las agresivas compresiones de Twitter (X) y proteger el trabajo de los creadores:
+This tool was designed to bypass aggressive Twitter (X) compressions and protect creators' work:
 
-- **Múltiples Algoritmos de Jitter:** Global Shift, Bloques Corruptos, Ruido Estático, Ondulación de Malla, y Deformación Suave (*Value Noise*).
-- **Exportación Dual (GIF y WebM):** 
-  - Genera GIFs tradicionales.
-  - Exporta en WebM para preservar **Transparencia Alfa** con bordes anti-aliasing perfectos (Twitter los acepta de forma nativa).
-- **Fondo Matte Integrado:** Si usas GIF, puedes inyectar colores de fondo específicos (Twitter Dark, Dim, Light) para evitar que la red social destroce los bordes de tu ilustración con un fondo negro forzado.
-- **Marca de Agua Anti-Robo:** Introduce tu firma o @usuario, y JitterFX lo fusionará en la esquina de la animación con contraste adaptativo, haciendo imposible robar la imagen fácilmente.
-- **Bucle Ping-Pong:** Asegura que la animación fluya hacia adelante y hacia atrás para que no haya saltos bruscos al reiniciarse el loop.
+- **Multiple Jitter Algorithms:** Global Shift, Chunky Blocks, Static/Fuzzy Noise, Mesh Ripple, and Smooth Deformation (Value Noise).
+- **Dual Export (GIF & WebM):** 
+  - Generates traditional GIFs.
+  - Exports in WebM to preserve **Alpha Transparency** with perfect anti-aliased edges (natively supported by Twitter).
+- **Integrated Matte Background:** If you use GIF, you can inject specific background colors (Twitter Dark, Dim, Light) to prevent the social network from destroying your illustration's edges with a forced black background.
+- **Anti-Theft Watermark:** Enter your signature or @username, and JitterFX will fuse it into the corner of the animation with adaptive contrast, making it impossible to easily steal the image.
+- **Ping-Pong Loop:** Ensures the animation flows back and forth so there are no sudden jumps when the loop restarts.
 
-## 🛠️ Detalles Técnicos
+## 🛠️ Technical Details
 
-- **Core:** HTML5, CSS3, JavaScript Vanilla.
-- **Motor Gráfico:** WebGL para shaders de fragmento (aceleración por GPU en el navegador).
-- **Exportación:** `gif.js` para renderizado de buffers por Web Workers y `MediaRecorder` nativo para WebM (VP9/H264).
-- **Arquitectura:** Progressive Web App (PWA) con Service Workers para ejecución 100% Offline.
+- **Core:** HTML5, CSS3, Vanilla JavaScript.
+- **Graphics Engine:** WebGL for fragment shaders (GPU acceleration in the browser).
+- **Export:** `gif.js` for buffer rendering via Web Workers and native `MediaRecorder` for WebM (VP9/H264).
+- **Architecture:** Progressive Web App (PWA) with Service Workers for 100% Offline execution.
