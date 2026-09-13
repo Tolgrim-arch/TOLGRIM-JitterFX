@@ -140,34 +140,37 @@ function paint(e) {
 
 const brushCursor = document.getElementById('brushCursor');
 
+function updateBrushCursor(e) {
+    brushCursor.style.display = 'block';
+    brushCursor.style.left = e.clientX + 'px';
+    brushCursor.style.top = e.clientY + 'px';
+    
+    const rect = canvas.getBoundingClientRect();
+    const imageAspect = canvas.width / canvas.height;
+    const boxAspect = rect.width / rect.height;
+    let renderedWidth;
+    if (imageAspect > boxAspect) {
+        renderedWidth = rect.width;
+    } else {
+        renderedWidth = rect.height * imageAspect;
+    }
+    const scale = renderedWidth / canvas.width;
+    const size = parseInt(brushSizeInput.value) * 2 * scale;
+    
+    brushCursor.style.width = size + 'px';
+    brushCursor.style.height = size + 'px';
+}
+
 canvas.addEventListener('pointerdown', (e) => {
     if (!isBrushEnabled) return;
     isPainting = true;
+    updateBrushCursor(e);
     paint(e);
     canvas.setPointerCapture(e.pointerId);
 });
 canvas.addEventListener('pointermove', (e) => {
     if (isBrushEnabled) {
-        brushCursor.style.display = 'block';
-        brushCursor.style.left = e.clientX + 'px';
-        brushCursor.style.top = e.clientY + 'px';
-        
-        // Compute visual size
-        const rect = canvas.getBoundingClientRect();
-        const imageAspect = canvas.width / canvas.height;
-        const boxAspect = rect.width / rect.height;
-        let renderedWidth;
-        if (imageAspect > boxAspect) {
-            renderedWidth = rect.width;
-        } else {
-            renderedWidth = rect.height * imageAspect;
-        }
-        const scale = renderedWidth / canvas.width;
-        const size = parseInt(brushSizeInput.value) * 2 * scale; // diameter
-        
-        brushCursor.style.width = size + 'px';
-        brushCursor.style.height = size + 'px';
-        
+        updateBrushCursor(e);
         if (isPainting) paint(e);
     }
 });
