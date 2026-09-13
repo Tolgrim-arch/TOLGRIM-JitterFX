@@ -95,7 +95,7 @@ h2 { margin: 0; font-size: 1.5em; text-align: center; color: var(--accent-color)
     .preview { min-height: 50vh; }
 }
 
-.theme-switch { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 30px; }
+.theme-switch { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 30px; flex-shrink: 0; }
 .theme-switch input { display: none; }
 .theme-switch .slider {
     position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
